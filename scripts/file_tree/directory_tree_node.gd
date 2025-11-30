@@ -1,0 +1,2 @@
+@tool
+class_name GPM_DirectoryTreeNode extends GPM_FileTreeItem

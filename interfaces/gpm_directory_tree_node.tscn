@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=3 uid="uid://nf6o352fh416"]
+
+[ext_resource type="Script" uid="uid://csqmekngfbed2" path="res://addons/package_manager/scripts/file_tree/directory_tree_node.gd" id="1_ypgpm"]
+
+[node name="GPM_DirectoryTreeNode" type="Control" node_paths=PackedStringArray("label_node", "indent_spacer", "select_button")]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 370.0
+offset_top = -56.0
+offset_right = 370.0
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+script = ExtResource("1_ypgpm")
+label_node = NodePath("HBoxContainer/Label")
+indent_spacer = NodePath("HBoxContainer/Spacer")
+select_button = NodePath("HBoxContainer/CenterContainer/SelectionButton")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Spacer" type="Control" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="SelectionButton" type="Button" parent="HBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 3
