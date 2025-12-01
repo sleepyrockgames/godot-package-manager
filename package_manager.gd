@@ -1,7 +1,7 @@
 @tool
 extends EditorPlugin
 
-var ui_interface:Resource = load("res://addons/package_manager/interfaces/package_manager_interface.tscn")
+var ui_interface:Resource = load("res://addons/godot-package-manager/interfaces/package_manager_interface.tscn")
 var manager_window:GPM_PackageManagerWindow
 
 const IS_DEBUG:bool = true

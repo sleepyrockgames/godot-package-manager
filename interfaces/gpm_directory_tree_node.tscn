@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://nf6o352fh416"]
+[gd_scene load_steps=4 format=3 uid="uid://nf6o352fh416"]
 
-[ext_resource type="Script" uid="uid://csqmekngfbed2" path="res://addons/package_manager/scripts/file_tree/directory_tree_node.gd" id="1_ypgpm"]
+[ext_resource type="Script" uid="uid://csqmekngfbed2" path="res://addons/godot-package-manager/scripts/file_tree/directory_tree_node.gd" id="1_ypgpm"]
+[ext_resource type="Texture2D" uid="uid://bmmb6jk5tsbjy" path="res://addons/godot-package-manager/assets/selected.png" id="2_0pcdw"]
+[ext_resource type="Script" uid="uid://bos8b7vbc8fnb" path="res://addons/godot-package-manager/scripts/file_tree/three_state_button.gd" id="2_db1v7"]
 
 [node name="GPM_DirectoryTreeNode" type="Control" node_paths=PackedStringArray("label_node", "indent_spacer", "select_button")]
 custom_minimum_size = Vector2(0, 25)
@@ -37,8 +39,19 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="SelectionButton" type="Button" parent="HBoxContainer/CenterContainer"]
-custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
+script = ExtResource("2_db1v7")
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/CenterContainer/SelectionButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_0pcdw")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="HBoxContainer"]
 layout_mode = 2

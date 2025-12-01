@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://rn0qqjlms7rs"]
 
-[ext_resource type="Script" uid="uid://cca8aw8rai432" path="res://addons/package_manager/scripts/manager_ui.gd" id="1_xu1o1"]
-[ext_resource type="Texture2D" uid="uid://slvh10sbyhxy" path="res://addons/package_manager/assets/rotate-right-solid.svg" id="2_jde4s"]
-[ext_resource type="Texture2D" uid="uid://c1e17wxtergvg" path="res://addons/package_manager/assets/plus-solid.svg" id="3_aph24"]
-[ext_resource type="StyleBox" uid="uid://bfobgv1kldu5l" path="res://addons/package_manager/assets/field_background_dark.tres" id="4_tosd0"]
-[ext_resource type="Script" uid="uid://b7nv6hoqu87xt" path="res://addons/package_manager/scripts/package_info_view.gd" id="5_alpfn"]
+[ext_resource type="Script" uid="uid://cca8aw8rai432" path="res://addons/godot-package-manager/scripts/manager_ui.gd" id="1_xu1o1"]
+[ext_resource type="Texture2D" uid="uid://slvh10sbyhxy" path="res://addons/godot-package-manager/assets/rotate-right-solid.svg" id="2_jde4s"]
+[ext_resource type="Texture2D" uid="uid://c1e17wxtergvg" path="res://addons/godot-package-manager/assets/plus-solid.svg" id="3_aph24"]
+[ext_resource type="StyleBox" uid="uid://bfobgv1kldu5l" path="res://addons/godot-package-manager/assets/field_background_dark.tres" id="4_tosd0"]
+[ext_resource type="Script" uid="uid://b7nv6hoqu87xt" path="res://addons/godot-package-manager/scripts/package_info_view.gd" id="5_alpfn"]
 
 [node name="PackageManagerInterface" type="Window"]
 oversampling_override = 1.0

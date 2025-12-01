@@ -27,9 +27,12 @@ func _ready() -> void:
    select_button.custom_minimum_size = Vector2.ONE * min(size.y, BUTTON_SIZE_PX)
    pass
 
+## Set whether the selection of the file node can be toggled
+func set_selectable(is_selectable:bool)->void:
+    select_button.disabled = !is_selectable
+
 ## Callback for when the item is toggled
 func on_item_toggle(is_selected:bool)->void:
-
     # TODO: Implement me
     pass
 
