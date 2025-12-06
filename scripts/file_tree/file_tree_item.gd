@@ -9,9 +9,19 @@ var full_path:String = ""
 
 @export var label_node:Label
 @export var indent_spacer:Control
-@export var select_button:Button
+@export var select_button:GPM_ThreeStateButton
+
+enum FILE_SELECTION_STATE {SELECTED, UNSELECTED, MIXED}
+var current_state:FILE_SELECTION_STATE = FILE_SELECTION_STATE.UNSELECTED
+
+signal state_updated(new_state:FILE_SELECTION_STATE)
 
 const BUTTON_SIZE_PX:int = 15
+
+func _ready() -> void:
+   select_button.custom_minimum_size = Vector2.ONE * min(size.y, BUTTON_SIZE_PX)
+   select_button.pressed.connect(on_item_toggle)
+   pass
 
 func set_node_text(item_full_path:String)->void:
     full_path = item_full_path
@@ -23,18 +33,26 @@ func set_node_text(item_full_path:String)->void:
         label_node.text = node_name
     pass
 
-func _ready() -> void:
-   select_button.custom_minimum_size = Vector2.ONE * min(size.y, BUTTON_SIZE_PX)
-   pass
-
 ## Set whether the selection of the file node can be toggled
 func set_selectable(is_selectable:bool)->void:
     select_button.disabled = !is_selectable
 
 ## Callback for when the item is toggled
-func on_item_toggle(is_selected:bool)->void:
-    # TODO: Implement me
+func on_item_toggle()->void:
+    if(current_state == FILE_SELECTION_STATE.UNSELECTED):
+        _set_state(FILE_SELECTION_STATE.SELECTED)
+    else:
+      _set_state(FILE_SELECTION_STATE.UNSELECTED)
+
+    state_updated.emit(current_state)
     pass
+
+## Sets the state [i]WITHOUT[/i] firing an updatee
+func _set_state(new_state:FILE_SELECTION_STATE)->void:
+    current_state = new_state
+    select_button.update_icon_for_state(current_state)
+    pass
+
 
 ## Sets the (horizontal) indent spacing
 func set_indent_spacing(pixel_indent_horiz:int)->void:

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://8shakfhgvrq7" path="res://addons/godot-package-manager/scripts/file_tree/file_tree_node.gd" id="1_rptqg"]
 [ext_resource type="Script" uid="uid://bos8b7vbc8fnb" path="res://addons/godot-package-manager/scripts/file_tree/three_state_button.gd" id="2_1lb0m"]
-[ext_resource type="Texture2D" uid="uid://bmmb6jk5tsbjy" path="res://addons/godot-package-manager/assets/selected.png" id="3_u2egw"]
+[ext_resource type="Texture2D" uid="uid://cu8glhwvr7wr0" path="res://addons/godot-package-manager/assets/icon_unselected.png" id="3_1lb0m"]
 
 [node name="GPM_FileTreeNode" type="Control" node_paths=PackedStringArray("label_node", "indent_spacer", "select_button")]
 custom_minimum_size = Vector2(0, 25)
@@ -34,6 +34,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="SelectionButton" type="Button" parent="HBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(15, 15)
 layout_mode = 2
 script = ExtResource("2_1lb0m")
 
@@ -44,7 +45,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("3_u2egw")
+texture = ExtResource("3_1lb0m")
 expand_mode = 1
 stretch_mode = 5
 
