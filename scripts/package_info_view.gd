@@ -25,6 +25,10 @@ func _ready() -> void:
         child.queue_free()
     file_item_map.clear()
     build_tree_with_root_path("res://")
+
+    print("\n - ".join(file_item_map.keys()))
+    print(" ============================= " )
+    print("\n - ".join(file_item_direct_children.keys()))
     pass
 
 ## Rebuilds the file tree with the provided root path
@@ -81,13 +85,13 @@ func build_tree(current_node:String, directory_level:int)->void:
 
 ## Callback handler for when a new button is selected
 func on_state_update(new_item_state:GPM_FileTreeItem.FILE_SELECTION_STATE, full_item_path:String, is_directory:bool)->void:
-    # TODO: Handle button changed state
     if(is_directory):
-        handle_new_directory_state(new_item_state, full_item_path)
+        handle_new_directory_state(new_item_state, full_item_path, [])
         pass
     else:
-        handle_new_file_state(new_item_state, full_item_path)
+        handle_new_file_state(new_item_state, full_item_path, [])
         pass
+    print(" -------------- ")
     pass
 
 ## Returns TRUE if the file at the given path should be ignored from the file selection
@@ -97,81 +101,84 @@ func should_ignore_file(file_name:String)->bool:
                     .is_empty()
 
 ## Handles the state change of a directory
-func handle_new_directory_state(new_state:GPM_FileTreeItem.FILE_SELECTION_STATE, full_item_path:String)->void:
-    print("handling state change of " + full_item_path)
+func handle_new_directory_state(new_state:GPM_FileTreeItem.FILE_SELECTION_STATE, full_item_path:String, visited:Array[String])->void:
+    # Skip already updated paths
+    if(visited.has(full_item_path)):
+        return
+    visited.append(full_item_path)
+
     if(new_state != GPM_FileTreeItem.FILE_SELECTION_STATE.MIXED):
-        ## For both selected and unselected, recursively update any children to match the same state
-        var child_items:Array = file_item_direct_children[full_item_path + DIRECTORY_SEPARATOR]
-        var new_child_state:GPM_FileTreeItem.FILE_SELECTION_STATE = new_state
-        for child:GPM_FileTreeItem in child_items:
-                child._set_state(new_child_state)
-                # Recurse to child directories
-                if(child is GPM_DirectoryTreeNode):
-                    handle_new_directory_state(child.current_state, child.full_path)
+        recursive_set_state(new_state, full_item_path)
+        var parent_path:String = _get_parent_directory_path(full_item_path)
+        if(file_item_map.has(parent_path)):
+            var parent_node:GPM_DirectoryTreeNode = file_item_map[parent_path]
+            parent_node._set_state(_calculate_folder_state_from_children(parent_path))
+            handle_new_directory_state(parent_node.current_state, parent_path, visited)
+        else:
+            print("!! (new dir state) parent " + parent_path + " not found")
 
-
-    # For unselected, update the parent to mixed
-    if(new_state == GPM_FileTreeItem.FILE_SELECTION_STATE.UNSELECTED):
-        var path_parts:= full_item_path.split(DIRECTORY_SEPARATOR)
-        var parent_dir_path:String = DIRECTORY_SEPARATOR.join(path_parts.slice(0, path_parts.size() -1))
-        if(!file_item_map.has(parent_dir_path)):
-            return
-            
-        # If our parent folder wasn't already deselected, set it to mixed
-        var parent_node:GPM_FileTreeItem = file_item_map[parent_dir_path]
-        if(parent_node.current_state != GPM_FileTreeItem.FILE_SELECTION_STATE.UNSELECTED):
-            parent_node._set_state(GPM_FileTreeItem.FILE_SELECTION_STATE.MIXED)
-            handle_new_directory_state(parent_node.current_state, parent_node.full_path)
-        pass
-
-
-    if(new_state == GPM_FileTreeItem.FILE_SELECTION_STATE.MIXED):
-        # If we have no children, unselect ourselves
-        if(!file_item_direct_children.has(full_item_path + DIRECTORY_SEPARATOR)):
-            file_item_map[full_item_path]._set_state(GPM_FileTreeItem.FILE_SELECTION_STATE.UNSELECTED)
-            return
-
-        # Propogate upwards
-        var path_parts:= full_item_path.split(DIRECTORY_SEPARATOR)
-        var parent_dir_path:String = DIRECTORY_SEPARATOR.join(path_parts.slice(0, path_parts.size() -1))
-        # Probably hit the root of the files
-        if(!file_item_map.has(parent_dir_path)):
-            return
-            
-        var parent_node:GPM_FileTreeItem = file_item_map[parent_dir_path]
-        
-        ## All siblings are in the same state
-        if(_all_children_match_state(full_item_path, GPM_FileTreeItem.FILE_SELECTION_STATE.UNSELECTED)):
-            file_item_map[full_item_path]._set_state(GPM_FileTreeItem.FILE_SELECTION_STATE.UNSELECTED)
-            
-            parent_node._set_state(GPM_FileTreeItem.FILE_SELECTION_STATE.UNSELECTED)
-            #handle_new_directory_state(parent_node.current_state, parent_node.full_path)
-        #else:
-            #parent_node._set_state(GPM_FileTreeItem.FILE_SELECTION_STATE.MIXED)
-
-        #handle_new_directory_state(parent_node.current_state, parent_node.full_path)
-            
-           
+    print(full_item_path + " changed to " + str(GPM_FileTreeItem.FILE_SELECTION_STATE.keys()[file_item_map[full_item_path].current_state]))
     pass
-
 
 func _all_children_match_state(parent_dir_path:String, target_state:GPM_FileTreeItem.FILE_SELECTION_STATE)->bool:
     # Otherwise, if all children are unselected, deselect self and propogate upwards
-    var children:Array = file_item_direct_children[parent_dir_path + DIRECTORY_SEPARATOR]
-       
-    var matched_state:= GPM_FileTreeItem.FILE_SELECTION_STATE.UNSELECTED
-    return children.all(func(child:GPM_FileTreeItem): return child.current_state == matched_state)
+    var children:Array = file_item_direct_children[parent_dir_path]
+    return children.all(func(child:GPM_FileTreeItem): return child.current_state == target_state)
     pass
 
 ## Handles the state change of a file
-func handle_new_file_state(new_state:GPM_FileTreeItem.FILE_SELECTION_STATE, full_item_path:String)->void:
-    if(new_state == GPM_FileTreeItem.FILE_SELECTION_STATE.UNSELECTED):
-        # Deselect self and mark parent directory as mixed
-        pass
-    elif(new_state == GPM_FileTreeItem.FILE_SELECTION_STATE.SELECTED):
-        # Mark self as selected and check if the parent file has all children included
+func handle_new_file_state(new_state:GPM_FileTreeItem.FILE_SELECTION_STATE, full_item_path:String, visited:Array[String])->void:
+
+    if(visited.has(full_item_path)):
+        return
+    
+    visited.push_back(full_item_path)
+
+    var parent_dir_path := _get_parent_directory_path(full_item_path)
+    # Probably hit the root of the files
+    if(!file_item_map.has(parent_dir_path)):
+        return
+
+    var parent_node:GPM_FileTreeItem = file_item_map[parent_dir_path]
+    handle_new_directory_state(GPM_FileTreeItem.FILE_SELECTION_STATE.MIXED,parent_dir_path, visited)
+    pass
+
+## Calculates the folder state from the state of the direct children
+func _calculate_folder_state_from_children(folder_path:String)->GPM_FileTreeItem.FILE_SELECTION_STATE:
+    if(!file_item_direct_children.has(folder_path)):
+        print("!! calcaulte folder state: dir not found- " + folder_path)
+        return GPM_FileTreeItem.FILE_SELECTION_STATE.UNSELECTED
+    
+    var children:Array = file_item_direct_children[folder_path]
+
+    var all_children_checked:bool = _all_children_match_state(folder_path, GPM_FileTreeItem.FILE_SELECTION_STATE.SELECTED)
+    var all_children_unchecked:bool = _all_children_match_state(folder_path, GPM_FileTreeItem.FILE_SELECTION_STATE.UNSELECTED)
+    if(all_children_checked):
+        return GPM_FileTreeItem.FILE_SELECTION_STATE.SELECTED
+    elif(all_children_unchecked):
+        return GPM_FileTreeItem.FILE_SELECTION_STATE.UNSELECTED
+    return GPM_FileTreeItem.FILE_SELECTION_STATE.MIXED
+    pass
+
+## Recursively set the state of any descendant files and folder
+func recursive_set_state(new_state:GPM_FileTreeItem.FILE_SELECTION_STATE, folder_dir:String)->void:
+    var folder_node:GPM_DirectoryTreeNode = file_item_map[folder_dir]
+    folder_node._set_state(new_state)
+
+    
+
+    for child:GPM_FileTreeItem in file_item_direct_children[folder_dir]:
+        child._set_state(new_state)
+        if(child is GPM_DirectoryTreeNode):
+            recursive_set_state(new_state, child.full_path)
         pass
 
+    pass
+
+func _get_parent_directory_path(file_path:String)->String:
+    var path_parts:= file_path.split(DIRECTORY_SEPARATOR)
+    var parent_dir_path:String = DIRECTORY_SEPARATOR.join(path_parts.slice(0, path_parts.size() -1))
+    return parent_dir_path
     pass
 
 ## Updates the child map with the new child
@@ -190,11 +197,11 @@ func create_new_file_node(file_name:String, parent_directory_path:String, file_l
     var new_child:= FILE_NODE_PREFAB.instantiate() as GPM_FileTreeItem
     
     file_tree.add_child(new_child)
-    var full_path := parent_directory_path + "/" + file_name
+    var full_path := parent_directory_path + DIRECTORY_SEPARATOR + file_name
     new_child.set_node_text(full_path)
     file_item_map[full_path] = new_child
 
-    update_child_map(parent_directory_path + "/", new_child)
+    update_child_map(parent_directory_path, new_child)
 
     new_child.set_indent_spacing(file_level * INDENT_PX_PER_DIRECTORY_LEVEL)
     new_child.state_updated.connect(on_state_update.bind(new_child.full_path, false))
@@ -202,10 +209,12 @@ func create_new_file_node(file_name:String, parent_directory_path:String, file_l
 
 ## Helper function to create a new directory node
 func create_new_directory_node(new_directory_name:String, parent_directory_path:String,  directory_level:int)->void:
+
+    print("~~ Creating new node for " + new_directory_name)
     var new_child:= DIRECTORY_NODE_PREFAB.instantiate() as GPM_DirectoryTreeNode
     
     file_tree.add_child(new_child)
-    var full_path := parent_directory_path + "/" + new_directory_name
+    var full_path := parent_directory_path + DIRECTORY_SEPARATOR + new_directory_name
     new_child.set_node_text(full_path)
 
     file_item_map[full_path] = new_child
@@ -213,6 +222,6 @@ func create_new_directory_node(new_directory_name:String, parent_directory_path:
 
 
     new_child.state_updated.connect(on_state_update.bind(new_child.full_path, true))
-    update_child_map(parent_directory_path + "/", new_child)
+    update_child_map(parent_directory_path, new_child)
     build_tree(full_path, directory_level + 1)
     pass
