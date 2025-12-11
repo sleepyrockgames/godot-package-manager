@@ -24,7 +24,7 @@ func _ready() -> void:
     for child in file_tree.get_children():
         child.queue_free()
     file_item_map.clear()
-    build_tree_with_root_path("res://")
+    build_tree_with_root_path("res://addons")
 
     print("\n - ".join(file_item_map.keys()))
     print(" ============================= " )
@@ -108,20 +108,32 @@ func handle_new_directory_state(new_state:GPM_FileTreeItem.FILE_SELECTION_STATE,
     visited.append(full_item_path)
 
     if(new_state != GPM_FileTreeItem.FILE_SELECTION_STATE.MIXED):
-        recursive_set_state(new_state, full_item_path)
+        recursive_set_child_state(new_state, full_item_path)
+
+        # Update parents
         var parent_path:String = _get_parent_directory_path(full_item_path)
         if(file_item_map.has(parent_path)):
             var parent_node:GPM_DirectoryTreeNode = file_item_map[parent_path]
             parent_node._set_state(_calculate_folder_state_from_children(parent_path))
             handle_new_directory_state(parent_node.current_state, parent_path, visited)
-        else:
-            print("!! (new dir state) parent " + parent_path + " not found")
+
+    # Recalculate our state and move up a level to do the same
+    else:
+        var current_node:GPM_DirectoryTreeNode = file_item_map[full_item_path]
+        current_node._set_state(_calculate_folder_state_from_children(full_item_path))
+        var parent_path:String = _get_parent_directory_path(full_item_path)
+
+        if(file_item_map.has(parent_path)):
+            var parent_node:GPM_DirectoryTreeNode = file_item_map[parent_path]
+            handle_new_directory_state(GPM_FileTreeItem.FILE_SELECTION_STATE.MIXED, parent_path, visited)
+
+        
 
     print(full_item_path + " changed to " + str(GPM_FileTreeItem.FILE_SELECTION_STATE.keys()[file_item_map[full_item_path].current_state]))
     pass
 
+## Checks if all children of the parent dir match the target state
 func _all_children_match_state(parent_dir_path:String, target_state:GPM_FileTreeItem.FILE_SELECTION_STATE)->bool:
-    # Otherwise, if all children are unselected, deselect self and propogate upwards
     var children:Array = file_item_direct_children[parent_dir_path]
     return children.all(func(child:GPM_FileTreeItem): return child.current_state == target_state)
     pass
@@ -161,7 +173,7 @@ func _calculate_folder_state_from_children(folder_path:String)->GPM_FileTreeItem
     pass
 
 ## Recursively set the state of any descendant files and folder
-func recursive_set_state(new_state:GPM_FileTreeItem.FILE_SELECTION_STATE, folder_dir:String)->void:
+func recursive_set_child_state(new_state:GPM_FileTreeItem.FILE_SELECTION_STATE, folder_dir:String)->void:
     var folder_node:GPM_DirectoryTreeNode = file_item_map[folder_dir]
     folder_node._set_state(new_state)
 
@@ -170,7 +182,7 @@ func recursive_set_state(new_state:GPM_FileTreeItem.FILE_SELECTION_STATE, folder
     for child:GPM_FileTreeItem in file_item_direct_children[folder_dir]:
         child._set_state(new_state)
         if(child is GPM_DirectoryTreeNode):
-            recursive_set_state(new_state, child.full_path)
+            recursive_set_child_state(new_state, child.full_path)
         pass
 
     pass
