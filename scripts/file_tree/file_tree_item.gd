@@ -37,7 +37,7 @@ func set_node_text(item_full_path:String)->void:
     full_path = item_full_path
 
     ## Extract the item name from the file path
-    var split = full_path.split("/")
+    var split = full_path.split(GPM_PackageInfoView.DIRECTORY_SEPARATOR)
     node_name = split[split.size()-1]
     if(label_node != null):
         label_node.text = node_name
