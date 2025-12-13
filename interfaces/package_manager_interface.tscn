@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://rn0qqjlms7rs"]
+[gd_scene load_steps=8 format=3 uid="uid://rn0qqjlms7rs"]
 
 [ext_resource type="Script" uid="uid://cca8aw8rai432" path="res://addons/godot-package-manager/scripts/manager_ui.gd" id="1_xu1o1"]
+[ext_resource type="Texture2D" uid="uid://cprxpn10fc15m" path="res://addons/godot-package-manager/assets/gear-solid.svg" id="2_6pabr"]
 [ext_resource type="Texture2D" uid="uid://slvh10sbyhxy" path="res://addons/godot-package-manager/assets/rotate-right-solid.svg" id="2_jde4s"]
 [ext_resource type="Texture2D" uid="uid://c1e17wxtergvg" path="res://addons/godot-package-manager/assets/plus-solid.svg" id="3_aph24"]
 [ext_resource type="StyleBox" uid="uid://bfobgv1kldu5l" path="res://addons/godot-package-manager/assets/field_background_dark.tres" id="4_tosd0"]
@@ -74,26 +75,14 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="RefreshPackagesButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/HeaderRow/HBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(23, 23)
-layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
-tooltip_text = "Refresh List"
-icon = ExtResource("2_jde4s")
-icon_alignment = 1
-expand_icon = true
-
-[node name="CreateButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/HeaderRow/HBoxContainer"]
+[node name="SettingsButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/HeaderRow/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(23, 23)
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
 tooltip_text = "Create New"
-icon = ExtResource("3_aph24")
-icon_alignment = 1
+icon = ExtResource("2_6pabr")
 expand_icon = true
 
 [node name="HSeparator" type="HSeparator" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer"]
@@ -129,6 +118,27 @@ text = "This is a test"
 layout_mode = 2
 text = "This is a test"
 
+[node name="Buttons" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer"]
+layout_mode = 2
+
+[node name="RefreshPackagesButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Refresh"
+icon = ExtResource("2_jde4s")
+icon_alignment = 2
+expand_icon = true
+
+[node name="NewPackageButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "New"
+icon = ExtResource("3_aph24")
+icon_alignment = 2
+expand_icon = true
+
 [node name="VSeparator" type="VSeparator" parent="Control/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
@@ -139,7 +149,6 @@ script = ExtResource("5_alpfn")
 package_view = NodePath("MarginContainer/VBoxContainer/PackageFileDetails")
 
 [node name="NoSelected" type="CenterContainer" parent="Control/MarginContainer/HBoxContainer/Details"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -149,11 +158,12 @@ grow_vertical = 2
 
 [node name="Label" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/NoSelected"]
 layout_mode = 2
-text = "Select a dependency to view its details."
+text = "Select a package to view its details."
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/HBoxContainer/Details"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

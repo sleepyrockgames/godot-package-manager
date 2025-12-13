@@ -4,7 +4,7 @@ class_name GPM_PackageManagerWindow extends Window
 func _ready()->void:
     close_requested.connect(hide)
     %RefreshPackagesButton.pressed.connect(refresh_package_list)
-    %CreateButton.pressed.connect(show_create_package)
+    %NewPackageButton.pressed.connect(show_create_package)
     pass
 
 ## Shows the create package dialog
