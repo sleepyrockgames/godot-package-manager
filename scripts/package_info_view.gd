@@ -61,11 +61,7 @@ func build_tree(current_node:String, directory_level:int)->void:
     # Don't include empty directories
     if(all_children.is_empty()):
         return
-
-    # Handle special directories (e.g res://, user:// etc)
-    if(current_node.ends_with(DIRECTORY_SEPARATOR + DIRECTORY_SEPARATOR)):
-        current_node = current_node.replace(DIRECTORY_SEPARATOR + DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR)
-
+        
     for child_item in all_children:
         # Ignore if it matches a filter extension
         
@@ -205,35 +201,36 @@ func update_child_map(parent_path:String, new_child:GPM_FileTreeItem)->void:
     pass
 
 ## Helper function to create a new file node
-func create_new_file_node(file_name:String, parent_directory_path:String, file_level:int):
+func create_new_file_node(file_name:String, parent_dir_node:GPM_DirectoryTreeNode, file_level:int):
     var new_child:= FILE_NODE_PREFAB.instantiate() as GPM_FileTreeItem
     
     file_tree.add_child(new_child)
-    var full_path := parent_directory_path + DIRECTORY_SEPARATOR + file_name
+    var full_path := parent_dir_node.full_path + DIRECTORY_SEPARATOR + file_name
     new_child.set_node_text(full_path)
     file_item_map[full_path] = new_child
 
-    update_child_map(parent_directory_path, new_child)
+    #update_child_map(parent_directory_path, new_child)
+    parent_dir_node.add_tree_child(new_child)
 
     new_child.set_indent_spacing(file_level * INDENT_PX_PER_DIRECTORY_LEVEL)
     new_child.state_updated.connect(on_state_update.bind(new_child.full_path, false))
     pass
 
 ## Helper function to create a new directory node
-func create_new_directory_node(new_directory_name:String, parent_directory_path:String,  directory_level:int)->void:
+func create_new_directory_node(new_directory_name:String, parent_dir_node:GPM_DirectoryTreeNode,  directory_level:int)->void:
 
     print("~~ Creating new node for " + new_directory_name)
     var new_child:= DIRECTORY_NODE_PREFAB.instantiate() as GPM_DirectoryTreeNode
     
     file_tree.add_child(new_child)
-    var full_path := parent_directory_path + DIRECTORY_SEPARATOR + new_directory_name
+    var full_path := parent_dir_node.full_path + DIRECTORY_SEPARATOR + new_directory_name
     new_child.set_node_text(full_path)
 
-    file_item_map[full_path] = new_child
+    parent_dir_node.add_tree_child(new_child)
     new_child.set_indent_spacing(directory_level * INDENT_PX_PER_DIRECTORY_LEVEL)
 
-
     new_child.state_updated.connect(on_state_update.bind(new_child.full_path, true))
-    update_child_map(parent_directory_path, new_child)
+    #update_child_map(parent_directory_path, new_child)
+
     build_tree(full_path, directory_level + 1)
     pass

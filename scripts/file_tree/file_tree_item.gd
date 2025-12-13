@@ -11,6 +11,8 @@ var full_path:String = ""
 @export var indent_spacer:Control
 @export var select_button:GPM_ThreeStateButton
 
+var _parent_directory:GPM_DirectoryTreeNode
+
 enum FILE_SELECTION_STATE {SELECTED, UNSELECTED, MIXED}
 var current_state:FILE_SELECTION_STATE = FILE_SELECTION_STATE.UNSELECTED
 
@@ -22,6 +24,12 @@ func _ready() -> void:
    select_button.custom_minimum_size = Vector2.ONE * min(size.y, BUTTON_SIZE_PX)
    select_button.pressed.connect(on_item_toggle)
    pass
+
+func set_parent_directory(dir:GPM_DirectoryTreeNode)->void:
+    _parent_directory = dir
+
+func get_parent_directory()->GPM_DirectoryTreeNode:
+    return _parent_directory
 
 func set_node_text(item_full_path:String)->void:
     full_path = item_full_path
@@ -52,7 +60,6 @@ func _set_state(new_state:FILE_SELECTION_STATE)->void:
     current_state = new_state
     select_button.update_icon_for_state(current_state)
     pass
-
 
 ## Sets the (horizontal) indent spacing
 func set_indent_spacing(pixel_indent_horiz:int)->void:
