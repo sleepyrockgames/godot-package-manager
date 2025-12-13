@@ -24,7 +24,7 @@ func _ready() -> void:
     for child in file_tree.get_children():
         child.queue_free()
     file_item_map.clear()
-    build_tree_with_root_path("res://addons")
+    build_tree_with_root_path("res://")
 
     print("\n - ".join(file_item_map.keys()))
     print(" ============================= " )
@@ -39,7 +39,7 @@ func build_tree_with_root_path(root_path:String)->void:
 
     file_item_direct_children.clear()
     file_item_map.clear()
-    create_new_directory_node(root_path, null, 0)
+    create_new_directory_node(root_path, null, -1)
     pass
 
 ## Recursive function to build the file tree
@@ -107,9 +107,13 @@ func create_new_directory_node(new_directory_name:String, parent_dir_node:GPM_Di
     print("~~ Creating new directory node for " + new_directory_name)
     var new_child:= DIRECTORY_NODE_PREFAB.instantiate() as GPM_DirectoryTreeNode
     
-    file_tree.add_child(new_child)
+    
     var parent_path:String = ""
     if(is_instance_valid(parent_dir_node)):
+
+        # Only add to the tree if *not* the root
+        file_tree.add_child(new_child)
+
         parent_path = parent_dir_node.full_path
         if(!parent_path.ends_with("/")):
             parent_path += DIRECTORY_SEPARATOR
