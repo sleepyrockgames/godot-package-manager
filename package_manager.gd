@@ -1,10 +1,11 @@
 @tool
-extends EditorPlugin
+class_name GodotPackageManager extends EditorPlugin
 
 var ui_interface:Resource = load("res://addons/godot-package-manager/interfaces/package_manager_interface.tscn")
 var manager_window:GPM_PackageManagerWindow
 
 const IS_DEBUG:bool = true
+const DIRECTORY_SEPARATOR:String = "/"
 
 func _enter_tree() -> void:
 	add_tool_menu_item("Open Package Manager", open_plugin_interface)

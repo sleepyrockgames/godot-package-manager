@@ -2,7 +2,7 @@
 class_name GPM_PackageFileTreeDisplay extends Control
 
 static var INDENT_PX_PER_DIRECTORY_LEVEL:int = 25
-const DIRECTORY_SEPARATOR:String = "/"
+
 
 const FILE_NODE_PREFAB = preload("res://addons/godot-package-manager/interfaces/gpm_file_tree_node.tscn")
 const DIRECTORY_NODE_PREFAB = preload("res://addons/godot-package-manager/interfaces/gpm_directory_tree_node.tscn")
@@ -52,7 +52,7 @@ func _build_tree(current_node:GPM_DirectoryTreeNode, directory_level:int)->void:
     files.append_array(DirAccess.get_files_at(current_node.full_path))
 
     # print("Files: " + str(files.size()) + " dirs: " + str(directories.size()))
-    var split = current_node.full_path.split(DIRECTORY_SEPARATOR)
+    var split = current_node.full_path.split(GodotPackageManager.DIRECTORY_SEPARATOR)
     var dir_name = split[split.size()-1]
 
     var all_children:Array[String] = []
@@ -92,7 +92,7 @@ func create_new_file_node(file_name:String, parent_dir_node:GPM_DirectoryTreeNod
     var new_child:= FILE_NODE_PREFAB.instantiate() as GPM_FileTreeItem
     
     file_tree.add_child(new_child)
-    var full_path := parent_dir_node.full_path + DIRECTORY_SEPARATOR + file_name
+    var full_path := parent_dir_node.full_path + GodotPackageManager.DIRECTORY_SEPARATOR + file_name
     new_child.set_node_text(full_path)
     file_item_map[full_path] = new_child
 
@@ -118,7 +118,7 @@ func create_new_directory_node(new_directory_name:String, parent_dir_node:GPM_Di
 
         parent_path = parent_dir_node.full_path
         if(!parent_path.ends_with("/")):
-            parent_path += DIRECTORY_SEPARATOR
+            parent_path += GodotPackageManager.DIRECTORY_SEPARATOR
 
     var full_path := parent_path + new_directory_name
     new_child.set_node_text(full_path)

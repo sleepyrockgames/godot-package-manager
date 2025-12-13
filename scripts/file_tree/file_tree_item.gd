@@ -40,12 +40,12 @@ func set_node_text(item_full_path:String)->void:
     full_path = item_full_path
 
     ## Extract the item name from the file path
-    var split = full_path.split(GPM_PackageFileTreeDisplay.DIRECTORY_SEPARATOR)
+    var split = full_path.split(GodotPackageManager.DIRECTORY_SEPARATOR)
     node_name = split[split.size()-1]
     if(label_node != null):
         label_node.text = node_name
         if(self is GPM_DirectoryTreeNode):
-            label_node.text += GPM_PackageFileTreeDisplay.DIRECTORY_SEPARATOR
+            label_node.text += GodotPackageManager.DIRECTORY_SEPARATOR
     pass
 
 ## Set whether the selection of the file node can be toggled
