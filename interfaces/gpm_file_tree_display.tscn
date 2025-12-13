@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjl6pldawl5ec"]
+
+[ext_resource type="StyleBox" uid="uid://bfobgv1kldu5l" path="res://addons/godot-package-manager/assets/field_background_dark.tres" id="1_1gqib"]
+[ext_resource type="Script" uid="uid://cilqta50g3hpk" path="res://addons/godot-package-manager/scripts/file_tree/package_file_tree_ui.gd" id="2_r62qp"]
+
+[node name="PackageFileDetails" type="PanelContainer"]
+size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("1_1gqib")
+script = ExtResource("2_r62qp")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="PackageTree" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer"]
+self_modulate = Color(0.8, 0.8, 0.8, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 5

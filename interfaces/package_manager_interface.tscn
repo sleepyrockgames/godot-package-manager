@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://rn0qqjlms7rs"]
+[gd_scene load_steps=7 format=3 uid="uid://rn0qqjlms7rs"]
 
 [ext_resource type="Script" uid="uid://cca8aw8rai432" path="res://addons/godot-package-manager/scripts/manager_ui.gd" id="1_xu1o1"]
 [ext_resource type="Texture2D" uid="uid://slvh10sbyhxy" path="res://addons/godot-package-manager/assets/rotate-right-solid.svg" id="2_jde4s"]
 [ext_resource type="Texture2D" uid="uid://c1e17wxtergvg" path="res://addons/godot-package-manager/assets/plus-solid.svg" id="3_aph24"]
 [ext_resource type="StyleBox" uid="uid://bfobgv1kldu5l" path="res://addons/godot-package-manager/assets/field_background_dark.tres" id="4_tosd0"]
 [ext_resource type="Script" uid="uid://b7nv6hoqu87xt" path="res://addons/godot-package-manager/scripts/package_info_view.gd" id="5_alpfn"]
+[ext_resource type="PackedScene" uid="uid://bjl6pldawl5ec" path="res://addons/godot-package-manager/interfaces/gpm_file_tree_display.tscn" id="5_mxn5n"]
 
 [node name="PackageManagerInterface" type="Window"]
 oversampling_override = 1.0
@@ -131,10 +132,11 @@ text = "This is a test"
 [node name="VSeparator" type="VSeparator" parent="Control/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="Details" type="Control" parent="Control/MarginContainer/HBoxContainer"]
+[node name="Details" type="Control" parent="Control/MarginContainer/HBoxContainer" node_paths=PackedStringArray("package_view")]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("5_alpfn")
+package_view = NodePath("MarginContainer/VBoxContainer/PackageFileDetails")
 
 [node name="NoSelected" type="CenterContainer" parent="Control/MarginContainer/HBoxContainer/Details"]
 visible = false
@@ -238,32 +240,5 @@ text = "v1.0.0"
 layout_mode = 2
 text = "Package Files:"
 
-[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer/HBoxContainer/Details/MarginContainer/VBoxContainer"]
+[node name="PackageFileDetails" parent="Control/MarginContainer/HBoxContainer/Details/MarginContainer/VBoxContainer" instance=ExtResource("5_mxn5n")]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_styles/panel = ExtResource("4_tosd0")
-
-[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/HBoxContainer/Details/MarginContainer/VBoxContainer/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="ScrollContainer" type="ScrollContainer" parent="Control/MarginContainer/HBoxContainer/Details/MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/HBoxContainer/Details/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="CurrentPackageTree" type="VBoxContainer" parent="Control/MarginContainer/HBoxContainer/Details/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/ScrollContainer/MarginContainer"]
-unique_name_in_owner = true
-self_modulate = Color(0.8, 0.8, 0.8, 1)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/separation = 5

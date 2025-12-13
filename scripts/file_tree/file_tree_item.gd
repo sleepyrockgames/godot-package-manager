@@ -11,6 +11,9 @@ var full_path:String = ""
 @export var indent_spacer:Control
 @export var select_button:GPM_ThreeStateButton
 
+## True if the user CAN'T change the state (i.e. it's read-only)
+var is_view_only:bool = true
+
 var _parent_directory:GPM_DirectoryTreeNode
 
 enum FILE_SELECTION_STATE {SELECTED, UNSELECTED, MIXED}
@@ -37,12 +40,12 @@ func set_node_text(item_full_path:String)->void:
     full_path = item_full_path
 
     ## Extract the item name from the file path
-    var split = full_path.split(GPM_PackageInfoView.DIRECTORY_SEPARATOR)
+    var split = full_path.split(GPM_PackageFileTreeDisplay.DIRECTORY_SEPARATOR)
     node_name = split[split.size()-1]
     if(label_node != null):
         label_node.text = node_name
         if(self is GPM_DirectoryTreeNode):
-            label_node.text += GPM_PackageInfoView.DIRECTORY_SEPARATOR
+            label_node.text += GPM_PackageFileTreeDisplay.DIRECTORY_SEPARATOR
     pass
 
 ## Set whether the selection of the file node can be toggled
@@ -51,6 +54,9 @@ func set_selectable(is_selectable:bool)->void:
 
 ## Callback for when the item is toggled
 func on_item_toggle()->void:
+    if(is_view_only):
+        return
+
     if(_current_state == FILE_SELECTION_STATE.UNSELECTED):
         _set_state(FILE_SELECTION_STATE.SELECTED)
     else:
