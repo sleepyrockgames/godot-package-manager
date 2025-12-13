@@ -14,7 +14,7 @@ var full_path:String = ""
 var _parent_directory:GPM_DirectoryTreeNode
 
 enum FILE_SELECTION_STATE {SELECTED, UNSELECTED, MIXED}
-var current_state:FILE_SELECTION_STATE = FILE_SELECTION_STATE.UNSELECTED
+var _current_state:FILE_SELECTION_STATE = FILE_SELECTION_STATE.UNSELECTED
 
 signal state_updated(new_state:FILE_SELECTION_STATE)
 
@@ -30,6 +30,8 @@ func set_parent_directory(dir:GPM_DirectoryTreeNode)->void:
 
 func get_parent_directory()->GPM_DirectoryTreeNode:
     return _parent_directory
+
+#region UI
 
 func set_node_text(item_full_path:String)->void:
     full_path = item_full_path
@@ -47,20 +49,26 @@ func set_selectable(is_selectable:bool)->void:
 
 ## Callback for when the item is toggled
 func on_item_toggle()->void:
-    if(current_state == FILE_SELECTION_STATE.UNSELECTED):
+    if(_current_state == FILE_SELECTION_STATE.UNSELECTED):
         _set_state(FILE_SELECTION_STATE.SELECTED)
     else:
       _set_state(FILE_SELECTION_STATE.UNSELECTED)
 
-    state_updated.emit(current_state)
+    _propogate_state()
+    pass
+
+func _propogate_state()->void:
+    printerr("!! DEFAULT PROPOGATE STATE WAS CALLED !!")
     pass
 
 ## Sets the state [i]WITHOUT[/i] firing an updatee
 func _set_state(new_state:FILE_SELECTION_STATE)->void:
-    current_state = new_state
-    select_button.update_icon_for_state(current_state)
+    _current_state = new_state
+    select_button.update_icon_for_state(_current_state)
     pass
 
 ## Sets the (horizontal) indent spacing
 func set_indent_spacing(pixel_indent_horiz:int)->void:
     indent_spacer.custom_minimum_size = Vector2(pixel_indent_horiz, indent_spacer.custom_minimum_size.y)
+
+#endregion
