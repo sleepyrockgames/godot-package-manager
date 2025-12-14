@@ -12,7 +12,7 @@ func to_json()->String:
     json_dict[CONFIG_FILE_LOCATION_KEY] = config_file_location
     json_dict[CONFIG_PACKAGE_SOURCE_LOCATION_KEY] = package_source_locations
 
-    return JSON.stringify(json_dict)
+    return JSON.stringify(json_dict," ")
     pass
 
 ## Parses the settings object from a JSON string
