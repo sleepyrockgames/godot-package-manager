@@ -113,13 +113,4 @@ func open_package_source_file_browser()->void:
 
     new_file_dialog.popup_centered()
     new_file_dialog.close_requested.connect(func(): new_file_dialog.free())
-
-
-func _show_warning_dialog(message:String)->void:
-    var confirm_dialog:AcceptDialog = AcceptDialog.new()
-    confirm_dialog.dialog_text = message
-    confirm_dialog.ok_button_text = "Okay"
-    add_child(confirm_dialog)
-    confirm_dialog.close_requested.connect(func():confirm_dialog.queue_free())
-    confirm_dialog.popup_centered()
-    pass
+    

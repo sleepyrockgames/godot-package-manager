@@ -9,7 +9,7 @@ class_name GPM_NewPackageDialog extends Window
 
 # Data
 @export var _package_name_input:LineEdit
-@export var _package_root_display_label:Label
+@export var _package_root_display_label:LineEdit
 @export var _package_version_input:LineEdit
 @export var _package_description_input:LineEdit
 
@@ -20,9 +20,18 @@ func _ready() -> void:
 
 
     _package_source_dropdown.clear()
-    for source_path:String in GodotPackageManager.loaded_config.package_source_locations:
-        _package_source_dropdown.add_item(source_path)
-    _package_source_dropdown.select(0)
+
+    if(!GodotPackageManager.loaded_config.package_source_locations.is_empty()):
+        for source_path:String in GodotPackageManager.loaded_config.package_source_locations:
+            _package_source_dropdown.add_item(source_path)
+        _package_source_dropdown.select(0)
+    else:
+        # No sources have been set up- instruct the user and close the dialog
+        var dialog:AcceptDialog = GPM_UIOperations.create_warning_dialog(
+            "No package sources have been set! Configure one in the settings menu before creating a new package", self)
+        dialog.canceled.connect(hide)
+        dialog.confirmed.connect(hide)
+        dialog.popup_centered()
 
 
 func _on_root_directory_selected(new_root:String)->void:
@@ -47,11 +56,15 @@ func select_package_root_pressed()->void:
 func _validate_input()->String:
     var package_name:String = _package_name_input.text
     print(package_name)
+
+    if(package_name.is_empty()):
+        return "Missing a package name!"
+
     if(GPM_PackageConfig.INVALID_CHARACTERS.any(func(char): return package_name.contains(char))):
         return "Package name contains invalid characters!"
 
     var package_desc:String = _package_description_input.text
-    if(GPM_PackageConfig.INVALID_CHARACTERS.any(func(char): return package_desc.contains(char))):
+    if(!package_desc.is_empty() && GPM_PackageConfig.INVALID_CHARACTERS.any(func(char): return package_desc.contains(char))):
         return "Package description contains invalid characters!"
 
     var version:String = _package_version_input.text
@@ -64,19 +77,15 @@ func _validate_input()->String:
     if(_package_content_display.get_all_selected().is_empty()):
         return "No files were selected to add to the package!"
 
-   
-
     return ""
 
 func _on_create_button_pressed()->void:
-
     if(_package_version_input.text.is_empty()):
         _package_version_input.text = "v0.0.1"
 
     var validation_warning:String = _validate_input()
     if(!validation_warning.is_empty()):
-        # TODO(@sleepyrockgames): Show warning popup
-        printerr(validation_warning)
+        GPM_UIOperations.create_warning_dialog(validation_warning, self).popup_centered()
         return
     
     var selected_files:Array = _package_content_display.get_all_selected()

@@ -40,7 +40,7 @@ func open_plugin_interface()->void:
 		manager_window = ui_interface.instantiate()
 		EditorInterface.get_editor_main_screen().add_child(manager_window)
 	
-	manager_window.show()
+	manager_window.popup_centered()
 
 	pass
 

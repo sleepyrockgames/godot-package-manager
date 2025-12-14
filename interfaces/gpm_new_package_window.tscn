@@ -10,7 +10,6 @@ oversampling_override = 1.0
 title = "Create New Package"
 initial_position = 2
 size = Vector2i(1000, 720)
-transient = true
 exclusive = true
 popup_window = true
 script = ExtResource("1_mxtq5")
@@ -113,9 +112,10 @@ layout_mode = 2
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="PackageRootLabel" type="Label" parent="Control/MarginContainer/VBoxContainer/RootPath/PanelContainer/MarginContainer"]
+[node name="PackageRootLabel" type="LineEdit" parent="Control/MarginContainer/VBoxContainer/RootPath/PanelContainer/MarginContainer"]
 layout_mode = 2
-text = "No root folder selected"
+placeholder_text = "No root folder selected"
+editable = false
 
 [node name="SelectPackageRootButton" type="Button" parent="Control/MarginContainer/VBoxContainer/RootPath"]
 unique_name_in_owner = true
