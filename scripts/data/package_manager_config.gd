@@ -3,7 +3,7 @@ class_name GPM_PackageManagerConfig extends RefCounted
 var config_file_location:String
 const CONFIG_FILE_LOCATION_KEY = "configFileLocation"
 
-var package_source_locations:Array[String] = []
+var package_source_locations:Array = []
 const CONFIG_PACKAGE_SOURCE_LOCATION_KEY:String = "packageSourceLocations"
 
 # Converts the settings object to a JSON string

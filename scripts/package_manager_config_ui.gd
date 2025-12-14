@@ -22,6 +22,7 @@ func _ready() -> void:
     config_file_browser_button.pressed.connect(open_config_file_browser)
     save_config_button.pressed.connect(_on_save_pressed)
     add_new_source_button.pressed.connect(open_package_source_file_browser)
+    config_file_location_text.text = config.config_file_location
     update_source_list_ui()
     pass
 
@@ -39,6 +40,8 @@ func open_config_file_browser()->void:
 
     new_file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_ANY
     new_file_dialog.access = FileDialog.ACCESS_FILESYSTEM
+    if(config.config_file_location != ""):
+        new_file_dialog.current_dir = config.config_file_location
     new_file_dialog.filters = ["*.config"]
     new_file_dialog.dir_selected.connect(on_config_path_set.bind(true))
     new_file_dialog.file_selected.connect(on_config_path_set.bind(false))
@@ -86,8 +89,16 @@ func on_add_new_source_submitted(path:String)->void:
     pass
 
 func _on_save_pressed()->void:
-    GodotPackageManager.write_settings_to_config(config)
+    var result = GodotPackageManager.write_settings_to_config(config)
+    if(result == ""):
+        result = "Changes saved successfully!"
 
+    var confirm_dialog:AcceptDialog = AcceptDialog.new()
+    confirm_dialog.dialog_text = result
+    confirm_dialog.ok_button_text = "Close"
+    add_child(confirm_dialog)
+    confirm_dialog.close_requested.connect(func():confirm_dialog.queue_free())
+    confirm_dialog.popup_centered()
     pass
 
 ## Opens a directory browser to locate package sources
@@ -97,6 +108,7 @@ func open_package_source_file_browser()->void:
 
     new_file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR
     new_file_dialog.access = FileDialog.ACCESS_FILESYSTEM
+    
     new_file_dialog.dir_selected.connect(on_add_new_source_submitted, CONNECT_ONE_SHOT)
 
     new_file_dialog.popup_centered()
@@ -104,5 +116,10 @@ func open_package_source_file_browser()->void:
 
 
 func _show_warning_dialog(message:String)->void:
-    # TODO(@sleepyrockgames): Implement this :)
+    var confirm_dialog:AcceptDialog = AcceptDialog.new()
+    confirm_dialog.dialog_text = message
+    confirm_dialog.ok_button_text = "Okay"
+    add_child(confirm_dialog)
+    confirm_dialog.close_requested.connect(func():confirm_dialog.queue_free())
+    confirm_dialog.popup_centered()
     pass

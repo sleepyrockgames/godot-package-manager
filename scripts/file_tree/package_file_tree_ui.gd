@@ -23,9 +23,9 @@ func _ready() -> void:
     file_item_map.clear()
     build_tree_with_root_path("res://")
 
-    print("\n - ".join(file_item_map.keys()))
-    print(" ============================= " )
-    print("\n - ".join(file_item_direct_children.keys()))
+    #print("\n - ".join(file_item_map.keys()))
+    #print(" ============================= " )
+    #print("\n - ".join(file_item_direct_children.keys()))
     pass
 
 ## Sets whether the user can modify the file states (i.e. if it's read only)
@@ -106,7 +106,7 @@ func create_new_file_node(file_name:String, parent_dir_node:GPM_DirectoryTreeNod
 ## Helper function to create a new directory node
 func create_new_directory_node(new_directory_name:String, parent_dir_node:GPM_DirectoryTreeNode,  directory_level:int)->void:
 
-    print("~~ Creating new directory node for " + new_directory_name)
+   # print("~~ Creating new directory node for " + new_directory_name)
     var new_child:= DIRECTORY_NODE_PREFAB.instantiate() as GPM_DirectoryTreeNode
     
     

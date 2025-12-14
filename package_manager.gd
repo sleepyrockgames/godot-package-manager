@@ -14,6 +14,16 @@ static var loaded_config:GPM_PackageManagerConfig
 
 func _enter_tree() -> void:
 	add_tool_menu_item("Open Package Manager", open_plugin_interface)
+
+	var config_loaded:bool = try_load_config()
+
+	if(!config_loaded):
+		loaded_config = GPM_PackageManagerConfig.new()
+		# TODO(@sleepyrockgames): Show warning and popup settings dialog
+		printerr("Warning: An error occured loading the package manager settings! Please validate all settings are correct!")
+	else:
+		print("Loaded package manager settings!")
+		print(loaded_config.to_json())
 	pass
 
 
@@ -36,7 +46,7 @@ func open_plugin_interface()->void:
 
 
 func try_load_config()->bool:
-	if(!DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(PM_PROJECT_CONFIG_PATH))):
+	if(!DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(PM_PROJECT_CONFIG_DIR))):
 		printerr("Failed to load package manager settings: project settings directory doesn't exist!")
 		return false
 	if(!FileAccess.file_exists(ProjectSettings.globalize_path(PM_PROJECT_CONFIG_PATH))):
@@ -71,13 +81,13 @@ func try_load_config()->bool:
 	pass
 
 ## Attempts to write the provided settings to the config
-static func write_settings_to_config(new_config:GPM_PackageManagerConfig)->void:
+static func write_settings_to_config(new_config:GPM_PackageManagerConfig)->String:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(GodotPackageManager.PM_PROJECT_CONFIG_DIR))
 
 	# Write the base lookup
 	var base_config_file:FileAccess = FileAccess.open(GodotPackageManager.PM_PROJECT_CONFIG_PATH, FileAccess.WRITE)
 	if(base_config_file == null):
-		printerr("Failed to write PROJECT config file: " + error_string(FileAccess.get_open_error()))
+		return "Failed to write PROJECT config file: " + error_string(FileAccess.get_open_error())
 		pass
 	else:
 		base_config_file.store_string(new_config.config_file_location)
@@ -87,12 +97,14 @@ static func write_settings_to_config(new_config:GPM_PackageManagerConfig)->void:
 	var file:FileAccess = FileAccess.open(new_config.config_file_location, FileAccess.WRITE)
 	# Failed to open
 	if(file == null):
-		printerr("Failed to write config file: " + error_string(FileAccess.get_open_error()))
+		return "Failed to write config file: " + error_string(FileAccess.get_open_error())
 		pass
 	else:
 		file.store_string(new_config.to_json())
 		file.close()
 		GodotPackageManager.loaded_config = new_config # Update the main config
+
+	return ""
 	pass
 
 
