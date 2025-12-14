@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7nmxc6ujfqgi"]
+
+[ext_resource type="Script" uid="uid://odskh8xle6gn" path="res://addons/godot-package-manager/scripts/ui_elements/config_source_ui.gd" id="1_hoy4h"]
+
+[node name="ConfigSourceLocation" type="HBoxContainer" node_paths=PackedStringArray("label_node", "remove_button")]
+script = ExtResource("1_hoy4h")
+label_node = NodePath("Label")
+remove_button = NodePath("RemoveButton")
+
+[node name="Label" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "/path/to/test/source"
+editable = false
+
+[node name="RemoveButton" type="Button" parent="."]
+custom_minimum_size = Vector2(31, 31)
+layout_mode = 2
+text = "Remove"

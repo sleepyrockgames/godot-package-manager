@@ -77,10 +77,8 @@ theme_override_constants/separation = 6
 
 [node name="OpenGPMSettingsButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/HeaderRow/HBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(23, 23)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
 tooltip_text = "Create New"
 icon = ExtResource("2_6pabr")
 expand_icon = true

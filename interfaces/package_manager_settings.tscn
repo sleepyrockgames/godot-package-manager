@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://bneyoe27uotci"]
+[gd_scene load_steps=5 format=3 uid="uid://bneyoe27uotci"]
 
 [ext_resource type="Script" uid="uid://cx7ehpxjghyfl" path="res://addons/godot-package-manager/scripts/package_manager_config_ui.gd" id="1_b1wtb"]
 [ext_resource type="Texture2D" uid="uid://ntb2o8cnunp1" path="res://addons/godot-package-manager/assets/folder_open_fa_free.png" id="1_qd4rb"]
+[ext_resource type="Texture2D" uid="uid://c1e17wxtergvg" path="res://addons/godot-package-manager/assets/plus-solid.svg" id="3_jroxf"]
+[ext_resource type="PackedScene" uid="uid://c7nmxc6ujfqgi" path="res://addons/godot-package-manager/interfaces/config_source_location_ui.tscn" id="4_41vac"]
 
-[node name="PackageManagerSettings" type="Window"]
+[node name="PackageManagerSettings" type="Window" node_paths=PackedStringArray("add_new_source_button", "source_list_container")]
 oversampling_override = 1.0
 title = "Package Manager Settings"
 initial_position = 2
@@ -11,6 +13,8 @@ size = Vector2i(800, 500)
 transient = true
 exclusive = true
 script = ExtResource("1_b1wtb")
+add_new_source_button = NodePath("Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/VBoxContainer/Control/PackageSourceContainers/Header/AddNewSourceButton")
+source_list_container = NodePath("Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/VBoxContainer/Control/PackageSourceContainers/ScrollContainer/VBoxContainer")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -69,24 +73,21 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ConfigFileLocation" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="ConfigFileLocation" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "The path to the package manager config. It is recommended that this be outside the current project."
 alignment = 1
 
-[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/ScrollContainer/VBoxContainer/ConfigFileLocation"]
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/VBoxContainer/ConfigFileLocation"]
 layout_mode = 2
 text = "Config File Location:"
 
-[node name="ConfigLocation" type="LineEdit" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/ScrollContainer/VBoxContainer/ConfigFileLocation"]
+[node name="ConfigLocation" type="LineEdit" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/VBoxContainer/ConfigFileLocation"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -95,13 +96,59 @@ editable = false
 context_menu_enabled = false
 emoji_menu_enabled = false
 
-[node name="OpenConfigLocationButton" type="Button" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/ScrollContainer/VBoxContainer/ConfigFileLocation"]
+[node name="OpenConfigLocationButton" type="Button" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/VBoxContainer/ConfigFileLocation"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(31, 31)
 layout_mode = 2
 tooltip_text = "Open in file browser"
 icon = ExtResource("1_qd4rb")
 expand_icon = true
+
+[node name="Control" type="Control" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PackageSourceContainers" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/VBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/VBoxContainer/Control/PackageSourceContainers"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/VBoxContainer/Control/PackageSourceContainers/Header"]
+layout_mode = 2
+text = "Package Sources:"
+
+[node name="Spacer" type="Control" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/VBoxContainer/Control/PackageSourceContainers/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AddNewSourceButton" type="Button" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/VBoxContainer/Control/PackageSourceContainers/Header"]
+custom_minimum_size = Vector2(103.975, 0)
+layout_mode = 2
+text = "Add New"
+icon = ExtResource("3_jroxf")
+expand_icon = true
+
+[node name="HSeparator" type="HSeparator" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/VBoxContainer/Control/PackageSourceContainers"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/VBoxContainer/Control/PackageSourceContainers"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/VBoxContainer/Control/PackageSourceContainers/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ConfigSourceLocation" parent="Control/MarginContainer/VBoxContainer/SettingsDisplay/MarginContainer/VBoxContainer/Control/PackageSourceContainers/ScrollContainer/VBoxContainer" instance=ExtResource("4_41vac")]
+visible = false
+layout_mode = 2
 
 [node name="CenterContainer" type="CenterContainer" parent="Control/MarginContainer/VBoxContainer"]
 layout_mode = 2

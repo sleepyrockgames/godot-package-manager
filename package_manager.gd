@@ -7,6 +7,11 @@ var manager_window:GPM_PackageManagerWindow
 const IS_DEBUG:bool = true
 const DIRECTORY_SEPARATOR:String = "/"
 
+const PM_PROJECT_CONFIG_DIR:String = "res://.godot/editor/godot_package_manager"
+const PM_PROJECT_CONFIG_PATH:String = PM_PROJECT_CONFIG_DIR + DIRECTORY_SEPARATOR + "godot_package_manager.cfg"
+
+static var loaded_config:GPM_PackageManagerConfig
+
 func _enter_tree() -> void:
 	add_tool_menu_item("Open Package Manager", open_plugin_interface)
 	pass
@@ -27,6 +32,67 @@ func open_plugin_interface()->void:
 	
 	manager_window.show()
 
+	pass
+
+
+func try_load_config()->bool:
+	if(!DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(PM_PROJECT_CONFIG_PATH))):
+		printerr("Failed to load package manager settings: project settings directory doesn't exist!")
+		return false
+	if(!FileAccess.file_exists(ProjectSettings.globalize_path(PM_PROJECT_CONFIG_PATH))):
+		printerr("Failed to load package manager settings: project config file doesn't exist")
+		return false
+		
+	var user_config_file_location:String
+
+	var base_config_file:FileAccess = FileAccess.open(GodotPackageManager.PM_PROJECT_CONFIG_PATH, FileAccess.READ)
+	if(base_config_file == null):
+		printerr("Failed to read PROJECT config file: " + error_string(FileAccess.get_open_error()))
+		return false
+		
+	user_config_file_location = base_config_file.get_line()
+	base_config_file.close()
+
+	var user_config_file:FileAccess = FileAccess.open(user_config_file_location, FileAccess.READ)
+	if(user_config_file == null):
+		printerr("Failed to read USER config file: " + error_string(FileAccess.get_open_error()))
+		return false
+	
+	var config_data:String = user_config_file.get_as_text()
+	user_config_file.close()
+
+	var parsed_config:GPM_PackageManagerConfig = GPM_PackageManagerConfig.from_json(config_data)
+	if(!parsed_config.validate_config()):
+		printerr("Malformed package manager config was loaded!")
+		return false
+
+	GodotPackageManager.loaded_config = parsed_config
+	return true
+	pass
+
+## Attempts to write the provided settings to the config
+static func write_settings_to_config(new_config:GPM_PackageManagerConfig)->void:
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(GodotPackageManager.PM_PROJECT_CONFIG_DIR))
+
+	# Write the base lookup
+	var base_config_file:FileAccess = FileAccess.open(GodotPackageManager.PM_PROJECT_CONFIG_PATH, FileAccess.WRITE)
+	if(base_config_file == null):
+		printerr("Failed to write PROJECT config file: " + error_string(FileAccess.get_open_error()))
+		pass
+	else:
+		base_config_file.store_string(new_config.config_file_location)
+		base_config_file.close()
+
+
+	var file:FileAccess = FileAccess.open(new_config.config_file_location, FileAccess.WRITE)
+	# Failed to open
+	if(file == null):
+		printerr("Failed to write config file: " + error_string(FileAccess.get_open_error()))
+		pass
+	else:
+		file.store_string(new_config.to_json())
+		file.close()
+		GodotPackageManager.loaded_config = new_config # Update the main config
 	pass
 
 
