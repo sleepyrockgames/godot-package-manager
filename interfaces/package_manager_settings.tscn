@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bneyoe27uotci"]
 
-[ext_resource type="Script" uid="uid://cx7ehpxjghyfl" path="res://addons/godot-package-manager/scripts/package_manager_config_ui.gd" id="1_b1wtb"]
+[ext_resource type="Script" uid="uid://cx7ehpxjghyfl" path="res://addons/godot-package-manager/scripts/ui_elements/package_manager_config_ui.gd" id="1_b1wtb"]
 [ext_resource type="Texture2D" uid="uid://ntb2o8cnunp1" path="res://addons/godot-package-manager/assets/folder_open_fa_free.png" id="1_qd4rb"]
 [ext_resource type="Texture2D" uid="uid://c1e17wxtergvg" path="res://addons/godot-package-manager/assets/plus-solid.svg" id="3_jroxf"]
 [ext_resource type="PackedScene" uid="uid://c7nmxc6ujfqgi" path="res://addons/godot-package-manager/interfaces/config_source_location_ui.tscn" id="4_41vac"]

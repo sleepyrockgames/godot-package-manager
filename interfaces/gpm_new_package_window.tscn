@@ -1,0 +1,154 @@
+[gd_scene load_steps=5 format=3 uid="uid://c53gk6xmemr2c"]
+
+[ext_resource type="StyleBox" uid="uid://bfobgv1kldu5l" path="res://addons/godot-package-manager/assets/field_background_dark.tres" id="1_c3x5l"]
+[ext_resource type="Script" uid="uid://cn50pp61k2wr8" path="res://addons/godot-package-manager/scripts/ui_elements/new_package_dialog.gd" id="1_mxtq5"]
+[ext_resource type="PackedScene" uid="uid://bjl6pldawl5ec" path="res://addons/godot-package-manager/interfaces/gpm_file_tree_display.tscn" id="2_jv8qk"]
+[ext_resource type="Texture2D" uid="uid://ntb2o8cnunp1" path="res://addons/godot-package-manager/assets/folder_open_fa_free.png" id="2_mxtq5"]
+
+[node name="GPM_NewPackageWindow" type="Window" node_paths=PackedStringArray("_package_content_display", "_open_root_path_browser_button", "_package_root_display_label", "_package_source_dropdown", "_create_package_button", "_package_name_input")]
+oversampling_override = 1.0
+title = "Create New Package"
+initial_position = 2
+size = Vector2i(1000, 720)
+transient = true
+exclusive = true
+popup_window = true
+script = ExtResource("1_mxtq5")
+_package_content_display = NodePath("Control/MarginContainer/VBoxContainer/PackageContentDisplay")
+_open_root_path_browser_button = NodePath("Control/MarginContainer/VBoxContainer/RootPath/SelectPackageRootButton")
+_package_root_display_label = NodePath("Control/MarginContainer/VBoxContainer/RootPath/PanelContainer/MarginContainer/PackageRootLabel")
+_package_source_dropdown = NodePath("Control/MarginContainer/VBoxContainer/TargetSource/TargetSourceOptions")
+_create_package_button = NodePath("Control/MarginContainer/VBoxContainer/CenterContainer/CreateButton")
+_package_name_input = NodePath("Control/MarginContainer/VBoxContainer/NameLabel/PackageNameInput")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="NameLabel" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/NameLabel"]
+layout_mode = 2
+text = "Name:"
+
+[node name="PackageNameInput" type="LineEdit" parent="Control/MarginContainer/VBoxContainer/NameLabel"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter a new name for the package"
+
+[node name="DescriptionLabel" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/DescriptionLabel"]
+layout_mode = 2
+text = "Description:"
+vertical_alignment = 1
+
+[node name="DescriptionInput" type="LineEdit" parent="Control/MarginContainer/VBoxContainer/DescriptionLabel"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Add a short description"
+
+[node name="VersionLabel" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/VersionLabel"]
+layout_mode = 2
+text = "Version:"
+vertical_alignment = 1
+
+[node name="DescriptionLabel" type="LineEdit" parent="Control/MarginContainer/VBoxContainer/VersionLabel"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter a version label (default v0.0.1)"
+
+[node name="RootPath" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/RootPath"]
+layout_mode = 2
+text = "Package Root:"
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer/VBoxContainer/RootPath"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = ExtResource("1_c3x5l")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer/RootPath/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="PackageRootLabel" type="Label" parent="Control/MarginContainer/VBoxContainer/RootPath/PanelContainer/MarginContainer"]
+layout_mode = 2
+text = "No root folder selected"
+
+[node name="SelectPackageRootButton" type="Button" parent="Control/MarginContainer/VBoxContainer/RootPath"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+icon = ExtResource("2_mxtq5")
+expand_icon = true
+
+[node name="TargetSource" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/TargetSource"]
+layout_mode = 2
+text = "Target Source:"
+vertical_alignment = 1
+
+[node name="TargetSourceOptions" type="OptionButton" parent="Control/MarginContainer/VBoxContainer/TargetSource"]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 1
+popup/item_0/text = "/mnt/nexus/GodotProjects/Packages"
+popup/item_0/id = 0
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Included Files:"
+
+[node name="PackageContentDisplay" parent="Control/MarginContainer/VBoxContainer" instance=ExtResource("2_jv8qk")]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CreateButton" type="Button" parent="Control/MarginContainer/VBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Create"

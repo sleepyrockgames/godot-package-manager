@@ -33,10 +33,11 @@ layout_mode = 2
 [node name="CenterContainer" type="CenterContainer" parent="HBoxContainer"]
 layout_mode = 2
 
-[node name="SelectionButton" type="Button" parent="HBoxContainer/CenterContainer"]
+[node name="SelectionButton" type="Button" parent="HBoxContainer/CenterContainer" node_paths=PackedStringArray("icon_rect")]
 custom_minimum_size = Vector2(15, 15)
 layout_mode = 2
 script = ExtResource("2_1lb0m")
+icon_rect = NodePath("Icon")
 
 [node name="Icon" type="TextureRect" parent="HBoxContainer/CenterContainer/SelectionButton"]
 layout_mode = 1

@@ -21,17 +21,23 @@ func _ready() -> void:
     for child in file_tree.get_children():
         child.queue_free()
     file_item_map.clear()
-    build_tree_with_root_path("res://")
+   # build_tree_with_root_path("res://")
 
     #print("\n - ".join(file_item_map.keys()))
     #print(" ============================= " )
     #print("\n - ".join(file_item_direct_children.keys()))
     pass
 
+
+## Get all selected files in the file tree
+func get_all_selected()->Array[String]:
+    return file_item_map.keys().filter(func(key): return  file_item_map[key] is GPM_FileTreeNode && file_item_map[key]._current_state == GPM_FileTreeItem.FILE_SELECTION_STATE.SELECTED)
+    pass
+
 ## Sets whether the user can modify the file states (i.e. if it's read only)
-func set_read_only(is_read_only:bool)->void:
+func set_is_read_only(is_read_only:bool)->void:
     for item:GPM_FileTreeItem in file_item_map.values():
-        item.is_read_only = is_read_only
+        item.is_view_only = is_read_only
 
 ## Rebuilds the file tree with the provided root path
 func build_tree_with_root_path(root_path:String)->void:
@@ -126,6 +132,7 @@ func create_new_directory_node(new_directory_name:String, parent_dir_node:GPM_Di
     if(is_instance_valid(parent_dir_node)):
         parent_dir_node.add_tree_child(new_child)
     new_child.set_indent_spacing(directory_level * INDENT_PX_PER_DIRECTORY_LEVEL)
+    file_item_map[full_path] = new_child
 
     #new_child.state_updated.connect(on_state_update.bind(new_child.full_path, true))
     #update_child_map(parent_directory_path, new_child)

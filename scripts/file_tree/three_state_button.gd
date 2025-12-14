@@ -4,7 +4,7 @@ var selected_icon:Texture2D = preload("res://addons/godot-package-manager/assets
 var unselected_icon:Texture2D = preload("res://addons/godot-package-manager/assets/icon_unselected.png")
 var mixed_icon:Texture2D = preload("res://addons/godot-package-manager/assets/partially_selected.png")
 
-@onready var icon_rect:TextureRect = get_node("./Icon") as TextureRect
+@export var icon_rect:TextureRect
 
 ## Updates the selected icon
 func update_icon_for_state(new_state:GPM_FileTreeItem.FILE_SELECTION_STATE)->void:
