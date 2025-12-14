@@ -9,9 +9,9 @@ const DIRECTORY_SEPARATOR:String = "/"
 
 const PM_PROJECT_CONFIG_DIR:String = "res://.godot/editor/godot_package_manager"
 const PM_PROJECT_CONFIG_PATH:String = PM_PROJECT_CONFIG_DIR + DIRECTORY_SEPARATOR + "godot_package_manager.cfg"
+const PM_PACKAGE_INFO_EXT:String = ".gpi"
 
 static var loaded_config:GPM_PackageManagerConfig
-
 func _enter_tree() -> void:
 	add_tool_menu_item("Open Package Manager", open_plugin_interface)
 
@@ -29,7 +29,6 @@ func _enter_tree() -> void:
 
 ## Opens the plugin interface
 func open_plugin_interface()->void:
-
 	# "Hot reload" the window if we're in debug
 	if(manager_window != null && IS_DEBUG):
 		manager_window.get_parent().remove_child(manager_window)
@@ -43,7 +42,6 @@ func open_plugin_interface()->void:
 	manager_window.popup_centered()
 
 	pass
-
 
 func try_load_config()->bool:
 	if(!DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(PM_PROJECT_CONFIG_DIR))):
@@ -106,7 +104,6 @@ static func write_settings_to_config(new_config:GPM_PackageManagerConfig)->Strin
 
 	return ""
 	pass
-
 
 func _exit_tree() -> void:
 	# Clean-up of the plugin goes here.

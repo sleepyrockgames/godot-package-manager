@@ -33,7 +33,6 @@ func _ready() -> void:
         dialog.confirmed.connect(hide)
         dialog.popup_centered()
 
-
 func _on_root_directory_selected(new_root:String)->void:
     _package_root_display_label.text = new_root
     _package_content_display.build_tree_with_root_path(new_root)

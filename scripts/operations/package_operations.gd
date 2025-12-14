@@ -33,7 +33,7 @@ static func export_package(config:GPM_PackageConfig, source_root_directory:Strin
 
     # Create package info
     var package_info_content:String = config.to_json()
-    var info_file_path:String = full_final_path + GodotPackageManager.DIRECTORY_SEPARATOR + "info.gpi"
+    var info_file_path:String = full_final_path + GodotPackageManager.DIRECTORY_SEPARATOR + "info" + GodotPackageManager.PM_PACKAGE_INFO_EXT
     var info_file:FileAccess = FileAccess.open(info_file_path, FileAccess.WRITE)
     if(info_file == null):
         printerr("Error writing package info file for " + config.package_name + ": " + error_string(FileAccess.get_open_error()))
@@ -41,6 +41,47 @@ static func export_package(config:GPM_PackageConfig, source_root_directory:Strin
     info_file.store_string(package_info_content)
     info_file.close()
     
+    pass
+
+## Recursively scans the given directory for packages
+static func _scan_for_packages(root_directory_abs_path:String, visited_dirs:Array[String])->Array:
+    #print(root_directory_abs_path)
+    if(visited_dirs.has(root_directory_abs_path)):
+        return []
+    visited_dirs.append(root_directory_abs_path)
+
+    var packages_in_dir:Array = []
+    packages_in_dir.append_array(DirAccess.get_files_at(root_directory_abs_path))
+
+    # Remove any non-info files and convert the name to the full path to the file
+    packages_in_dir = packages_in_dir.filter(func(file:String): return file.ends_with(GodotPackageManager.PM_PACKAGE_INFO_EXT))\
+        .map(func(file_name): return root_directory_abs_path + GodotPackageManager.DIRECTORY_SEPARATOR + file_name)
+   # print(packages_in_dir)
+
+    for folder_path:String in DirAccess.get_directories_at(root_directory_abs_path):
+        packages_in_dir.append_array(_scan_for_packages(root_directory_abs_path + GodotPackageManager.DIRECTORY_SEPARATOR + folder_path, visited_dirs))
+        pass
+
+    return packages_in_dir
+    pass
+
+## Loads all the packages present in the given directory (or its subdirectories), 
+## mapping the full path to the config file to it's loaded config object
+static func load_packages_in_dir(root_dir:String)->Dictionary:
+    var loaded_packages:Dictionary = {}
+    var package_paths:Array = _scan_for_packages(ProjectSettings.globalize_path(root_dir), [])
+    
+    for package_path:String in package_paths:
+        var loaded_package_file:FileAccess = FileAccess.open(package_path, FileAccess.READ)
+        if(loaded_package_file == null):
+            printerr("Failed to load package information at " + package_path + ": " + error_string(FileAccess.get_open_error()))
+            continue
+        var file_contents:String = loaded_package_file.get_as_text()
+        loaded_package_file.close()
+        var config:GPM_PackageConfig = GPM_PackageConfig.from_json(file_contents)
+        loaded_packages[package_path] = config
+
+    return loaded_packages
     pass
 
 ## Helper function to get the parent directory given the target path
