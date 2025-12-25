@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://b7nv6hoqu87xt" path="res://addons/godot-package-manager/scripts/package_info_view.gd" id="5_alpfn"]
 [ext_resource type="PackedScene" uid="uid://bjl6pldawl5ec" path="res://addons/godot-package-manager/interfaces/gpm_file_tree_display.tscn" id="5_mxn5n"]
 
-[node name="PackageManagerInterface" type="Window" node_paths=PackedStringArray("_found_packages_list", "_no_packages_shown_view", "_package_details_view")]
+[node name="PackageManagerInterface" type="Window" node_paths=PackedStringArray("_found_packages_list", "_no_packages_shown_view", "_package_details_view", "_package_details_display")]
 oversampling_override = 1.0
 title = "Package Manager"
 initial_position = 1
@@ -19,6 +19,7 @@ script = ExtResource("1_xu1o1")
 _found_packages_list = NodePath("Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/PanelContainer/MarginContainer/ScrollContainer/FoundPackagesList")
 _no_packages_shown_view = NodePath("Control/MarginContainer/HBoxContainer/Details/NoSelectedPackage")
 _package_details_view = NodePath("Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot")
+_package_details_display = NodePath("Control/MarginContainer/HBoxContainer/Details")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -135,11 +136,10 @@ expand_icon = true
 [node name="VSeparator" type="VSeparator" parent="Control/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="Details" type="Control" parent="Control/MarginContainer/HBoxContainer" node_paths=PackedStringArray("package_view")]
+[node name="Details" type="Control" parent="Control/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("5_alpfn")
-package_view = NodePath("PackageDetailsRoot/VBoxContainer/PackageFileDetails")
 
 [node name="NoSelectedPackage" type="CenterContainer" parent="Control/MarginContainer/HBoxContainer/Details"]
 unique_name_in_owner = true

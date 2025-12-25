@@ -10,10 +10,7 @@ var _loaded_packages:Dictionary = {}
 @export var _found_packages_list:VBoxContainer
 @export var _no_packages_shown_view:Control
 @export var _package_details_view:Control
-
-@onready var _package_name_label:Label = %PackageNameLabel
-@onready var _package_desc_label:Label = %PackageDescriptionLabel
-@onready var _package_version_label:Label = %PackageVersionLabel
+@export var _package_details_display:GPM_PackageInfoView
 @onready var _package_files_view:GPM_PackageFileTreeDisplay = %PackageFileDetails
 
 
@@ -68,14 +65,10 @@ func show_create_package()->void:
 func show_package_details(package_path:String)->void:
     var config:GPM_PackageConfig = _loaded_packages[package_path]
 
-    # Do UI setup
-    _package_name_label.text = config.package_name
-    _package_desc_label.text = config.package_description
-    _package_version_label.text = config.package_version
-
+    _package_details_display.show_config(config)
     # TODO(@sleepyrockgames): Update this to filter out what's not listed in the package info.
     # This currently pulls directly from the file tree
-    _package_files_view.build_tree_with_root_path(GPM_PackageOperations._get_parent_directory_abs_path(package_path))
+    _package_files_view.build_tree_from_file_list(config.contents)
 
     _package_details_view.visible = true
     _no_packages_shown_view.visible = false
