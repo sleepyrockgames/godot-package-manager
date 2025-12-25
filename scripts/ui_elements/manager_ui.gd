@@ -66,9 +66,11 @@ func show_package_details(package_path:String)->void:
     var config:GPM_PackageConfig = _loaded_packages[package_path]
 
     _package_details_display.show_config(config)
-    # TODO(@sleepyrockgames): Update this to filter out what's not listed in the package info.
-    # This currently pulls directly from the file tree
     _package_files_view.build_tree_from_file_list(config.contents)
+
+    # Select all since they're included in the package by marking the root as selected and propogating the state
+    _package_files_view.file_item_map[""]._set_state(GPM_FileTreeItem.FILE_SELECTION_STATE.SELECTED)
+    _package_files_view.file_item_map[""]._propogate_state()
 
     _package_details_view.visible = true
     _no_packages_shown_view.visible = false
