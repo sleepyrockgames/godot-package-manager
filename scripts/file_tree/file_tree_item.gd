@@ -26,6 +26,7 @@ const BUTTON_SIZE_PX:int = 15
 func _ready() -> void:
    select_button.custom_minimum_size = Vector2.ONE * min(size.y, BUTTON_SIZE_PX)
    select_button.pressed.connect(on_item_toggle)
+   select_button.update_icon_for_state(_current_state)
    pass
 
 func set_parent_directory(dir:GPM_DirectoryTreeNode)->void:
@@ -72,7 +73,8 @@ func _propogate_state()->void:
 ## Sets the state [i]WITHOUT[/i] firing an updatee
 func _set_state(new_state:FILE_SELECTION_STATE)->void:
     _current_state = new_state
-    select_button.update_icon_for_state(_current_state)
+    if(is_inside_tree()):
+        select_button.update_icon_for_state(_current_state)
     pass
 
 ## Sets the (horizontal) indent spacing

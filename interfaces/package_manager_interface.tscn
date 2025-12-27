@@ -136,10 +136,11 @@ expand_icon = true
 [node name="VSeparator" type="VSeparator" parent="Control/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="Details" type="Control" parent="Control/MarginContainer/HBoxContainer"]
+[node name="Details" type="Control" parent="Control/MarginContainer/HBoxContainer" node_paths=PackedStringArray("_import_shown_package_button")]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("5_alpfn")
+_import_shown_package_button = NodePath("PackageDetailsRoot/VBoxContainer/CenterContainer/HBoxContainer/ImportButton")
 
 [node name="NoSelectedPackage" type="CenterContainer" parent="Control/MarginContainer/HBoxContainer/Details"]
 unique_name_in_owner = true
@@ -249,3 +250,25 @@ text = "Package Files:"
 [node name="PackageFileDetails" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer" instance=ExtResource("5_mxn5n")]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="Pad" type="Control" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="DeleteButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/CenterContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Delete"
+
+[node name="ImportButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/CenterContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Import"

@@ -1,0 +1,107 @@
+[gd_scene load_steps=3 format=3 uid="uid://b4xqrvjc1cm4b"]
+
+[ext_resource type="Script" uid="uid://buhds3wf2jh20" path="res://addons/godot-package-manager/scripts/ui_elements/import_dialog.gd" id="1_glxr0"]
+[ext_resource type="Texture2D" uid="uid://ntb2o8cnunp1" path="res://addons/godot-package-manager/assets/folder_open_fa_free.png" id="2_tvm31"]
+
+[node name="PackageManagerSettings" type="Window" node_paths=PackedStringArray("_cancel_button", "_confirm_button", "_set_import_location_button", "_import_location_path_label", "_package_name_label")]
+oversampling_override = 1.0
+title = "Import Package"
+initial_position = 2
+size = Vector2i(800, 150)
+transient = true
+exclusive = true
+script = ExtResource("1_glxr0")
+_cancel_button = NodePath("Control/MarginContainer/VBoxContainer/CenterContainer/HBoxContainer/CancelButton")
+_confirm_button = NodePath("Control/MarginContainer/VBoxContainer/CenterContainer/HBoxContainer/ImportConfirmButton")
+_set_import_location_button = NodePath("Control/MarginContainer/VBoxContainer/ImportLocation/SelectPackageRootButton")
+_import_location_path_label = NodePath("Control/MarginContainer/VBoxContainer/ImportLocation/PackageImportLocationLabel")
+_package_name_label = NodePath("Control/MarginContainer/VBoxContainer/PackageLabel/PackageNameLabel")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+
+[node name="PackageLabel" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/PackageLabel"]
+layout_mode = 2
+text = "Importing Package:"
+vertical_alignment = 1
+
+[node name="PackageNameLabel" type="LineEdit" parent="Control/MarginContainer/VBoxContainer/PackageLabel"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Package to import"
+editable = false
+
+[node name="ImportLocation" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/ImportLocation"]
+layout_mode = 2
+text = "Import to Folder:"
+vertical_alignment = 1
+
+[node name="PackageImportLocationLabel" type="LineEdit" parent="Control/MarginContainer/VBoxContainer/ImportLocation"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "No import location selected"
+editable = false
+
+[node name="SelectPackageRootButton" type="Button" parent="Control/MarginContainer/VBoxContainer/ImportLocation"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+icon = ExtResource("2_tvm31")
+expand_icon = true
+
+[node name="Control" type="Control" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="CancelButton" type="Button" parent="Control/MarginContainer/VBoxContainer/CenterContainer/HBoxContainer"]
+layout_mode = 2
+text = "Cancel
+"
+
+[node name="ImportConfirmButton" type="Button" parent="Control/MarginContainer/VBoxContainer/CenterContainer/HBoxContainer"]
+layout_mode = 2
+text = "Import"

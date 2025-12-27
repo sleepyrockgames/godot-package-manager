@@ -7,6 +7,8 @@ var settings_window_instance:Window
 var _new_package_dialog:PackedScene = load("res://addons/godot-package-manager/interfaces/gpm_new_package_window.tscn")
 var _loaded_packages:Dictionary = {}
 
+var _import_dialog:PackedScene = load("res://addons/godot-package-manager/interfaces/import_package_dialog.tscn")
+
 @export var _found_packages_list:VBoxContainer
 @export var _no_packages_shown_view:Control
 @export var _package_details_view:Control
@@ -19,6 +21,7 @@ func _ready()->void:
     %RefreshPackagesButton.pressed.connect(_refresh_package_list)
     %NewPackageButton.pressed.connect(show_create_package)
     %OpenGPMSettingsButton.pressed.connect(open_gpm_settings)
+    _package_details_display.import_package_pressed.connect(_on_import_package)
     
     _package_details_view.visible = false
     _no_packages_shown_view.visible = true
@@ -26,6 +29,10 @@ func _ready()->void:
     pass
 
 func _reload_all_sources()->void:
+
+    _package_details_view.visible = false
+    _no_packages_shown_view.visible = true
+
     _loaded_packages.clear()
     # No sources to load
     if(GodotPackageManager.loaded_config.package_source_locations.is_empty()):
@@ -65,7 +72,7 @@ func show_create_package()->void:
 func show_package_details(package_path:String)->void:
     var config:GPM_PackageConfig = _loaded_packages[package_path]
 
-    _package_details_display.show_config(config)
+    _package_details_display.show_config(config, package_path)
     _package_files_view.build_tree_from_file_list(config.contents)
 
     # Select all since they're included in the package by marking the root as selected and propogating the state
@@ -88,4 +95,13 @@ func _refresh_package_list()->void:
         _found_packages_list.add_child(button)
         button.pressed.connect(show_package_details.bind(package_path))
         pass
+    pass
+
+## Callback to handle when the 'import package' button is pressed
+func _on_import_package(package_path:String)->void:
+    var dialog:GPM_ImportDialog = _import_dialog.instantiate()
+    dialog.close_requested.connect(dialog.queue_free)
+    dialog.set_imported_package(_loaded_packages[package_path], package_path)
+    add_child(dialog)
+    dialog.popup_centered()
     pass
