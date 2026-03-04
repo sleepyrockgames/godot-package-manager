@@ -38,7 +38,7 @@ func open_plugin_interface()->void:
 	if(manager_window == null):
 		manager_window = ui_interface.instantiate()
 		EditorInterface.get_editor_main_screen().add_child(manager_window)
-	
+
 	manager_window.popup_centered()
 
 	pass
@@ -50,14 +50,14 @@ func try_load_config()->bool:
 	if(!FileAccess.file_exists(ProjectSettings.globalize_path(PM_PROJECT_CONFIG_PATH))):
 		printerr("Failed to load package manager settings: project config file doesn't exist")
 		return false
-		
+
 	var user_config_file_location:String
 
 	var base_config_file:FileAccess = FileAccess.open(GodotPackageManager.PM_PROJECT_CONFIG_PATH, FileAccess.READ)
 	if(base_config_file == null):
 		printerr("Failed to read PROJECT config file: " + error_string(FileAccess.get_open_error()))
 		return false
-		
+
 	user_config_file_location = base_config_file.get_line()
 	base_config_file.close()
 
@@ -65,7 +65,7 @@ func try_load_config()->bool:
 	if(user_config_file == null):
 		printerr("Failed to read USER config file: " + error_string(FileAccess.get_open_error()))
 		return false
-	
+
 	var config_data:String = user_config_file.get_as_text()
 	user_config_file.close()
 

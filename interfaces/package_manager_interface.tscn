@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://rn0qqjlms7rs"]
+[gd_scene format=3 uid="uid://rn0qqjlms7rs"]
 
 [ext_resource type="Script" uid="uid://cca8aw8rai432" path="res://addons/godot-package-manager/scripts/ui_elements/manager_ui.gd" id="1_xu1o1"]
 [ext_resource type="Texture2D" uid="uid://cprxpn10fc15m" path="res://addons/godot-package-manager/assets/gear-solid.svg" id="2_6pabr"]
@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://b7nv6hoqu87xt" path="res://addons/godot-package-manager/scripts/package_info_view.gd" id="5_alpfn"]
 [ext_resource type="PackedScene" uid="uid://bjl6pldawl5ec" path="res://addons/godot-package-manager/interfaces/gpm_file_tree_display.tscn" id="5_mxn5n"]
 
-[node name="PackageManagerInterface" type="Window" node_paths=PackedStringArray("_found_packages_list", "_no_packages_shown_view", "_package_details_view", "_package_details_display")]
+[node name="PackageManagerInterface" type="Window" unique_id=2021923407 node_paths=PackedStringArray("_found_packages_list", "_no_packages_shown_view", "_package_details_view", "_package_details_display")]
 oversampling_override = 1.0
 title = "Package Manager"
 initial_position = 1
@@ -21,7 +21,7 @@ _no_packages_shown_view = NodePath("Control/MarginContainer/HBoxContainer/Detail
 _package_details_view = NodePath("Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot")
 _package_details_display = NodePath("Control/MarginContainer/HBoxContainer/Details")
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="Control" parent="." unique_id=575449938]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,7 +29,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Panel" type="Panel" parent="Control"]
+[node name="Panel" type="Panel" parent="Control" unique_id=940557722]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,7 +37,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Control"]
+[node name="MarginContainer" type="MarginContainer" parent="Control" unique_id=974343624]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -49,15 +49,15 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer" unique_id=1555537731]
 layout_mode = 2
 
-[node name="Browser" type="Control" parent="Control/MarginContainer/HBoxContainer"]
+[node name="Browser" type="Control" parent="Control/MarginContainer/HBoxContainer" unique_id=1075274587]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/HBoxContainer/Browser"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/HBoxContainer/Browser" unique_id=1154709230]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -65,21 +65,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HeaderRow" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer"]
+[node name="HeaderRow" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer" unique_id=1743305456]
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 2
 
-[node name="AvailableLabel" type="Label" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/HeaderRow"]
+[node name="AvailableLabel" type="Label" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/HeaderRow" unique_id=2128836273]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Available Packages"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/HeaderRow"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/HeaderRow" unique_id=44003984]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="OpenGPMSettingsButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/HeaderRow/HBoxContainer"]
+[node name="OpenGPMSettingsButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/HeaderRow/HBoxContainer" unique_id=708397493]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
@@ -87,15 +87,15 @@ tooltip_text = "Create New"
 icon = ExtResource("2_6pabr")
 expand_icon = true
 
-[node name="HSeparator" type="HSeparator" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer" unique_id=58850124]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer" unique_id=553195494]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = ExtResource("4_tosd0")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/PanelContainer" unique_id=776262138]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 5
@@ -103,19 +103,19 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/PanelContainer/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/PanelContainer/MarginContainer" unique_id=172799697]
 layout_mode = 2
 
-[node name="FoundPackagesList" type="VBoxContainer" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/PanelContainer/MarginContainer/ScrollContainer"]
+[node name="FoundPackagesList" type="VBoxContainer" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/PanelContainer/MarginContainer/ScrollContainer" unique_id=177404278]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 
-[node name="Buttons" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer"]
+[node name="Buttons" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer" unique_id=7197715]
 layout_mode = 2
 
-[node name="RefreshPackagesButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/Buttons"]
+[node name="RefreshPackagesButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/Buttons" unique_id=599572424]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -124,7 +124,7 @@ icon = ExtResource("2_jde4s")
 icon_alignment = 2
 expand_icon = true
 
-[node name="NewPackageButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/Buttons"]
+[node name="NewPackageButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Browser/VBoxContainer/Buttons" unique_id=1901026812]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -133,16 +133,16 @@ icon = ExtResource("3_aph24")
 icon_alignment = 2
 expand_icon = true
 
-[node name="VSeparator" type="VSeparator" parent="Control/MarginContainer/HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="Control/MarginContainer/HBoxContainer" unique_id=33799941]
 layout_mode = 2
 
-[node name="Details" type="Control" parent="Control/MarginContainer/HBoxContainer" node_paths=PackedStringArray("_import_shown_package_button")]
+[node name="Details" type="Control" parent="Control/MarginContainer/HBoxContainer" unique_id=1530484281 node_paths=PackedStringArray("_import_shown_package_button")]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("5_alpfn")
 _import_shown_package_button = NodePath("PackageDetailsRoot/VBoxContainer/CenterContainer/HBoxContainer/ImportButton")
 
-[node name="NoSelectedPackage" type="CenterContainer" parent="Control/MarginContainer/HBoxContainer/Details"]
+[node name="NoSelectedPackage" type="CenterContainer" parent="Control/MarginContainer/HBoxContainer/Details" unique_id=2116193607]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -151,13 +151,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/NoSelectedPackage"]
+[node name="Label" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/NoSelectedPackage" unique_id=633810802]
 layout_mode = 2
 text = "Select a package to view its details."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PackageDetailsRoot" type="MarginContainer" parent="Control/MarginContainer/HBoxContainer/Details"]
+[node name="PackageDetailsRoot" type="MarginContainer" parent="Control/MarginContainer/HBoxContainer/Details" unique_id=415136844]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -167,30 +167,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot" unique_id=410547254]
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="NameLabel" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer"]
+[node name="NameLabel" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer" unique_id=1199311180]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/NameLabel"]
+[node name="Label" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/NameLabel" unique_id=1822695529]
 layout_mode = 2
 text = "Name:"
 
-[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/NameLabel"]
+[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/NameLabel" unique_id=1103104349]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("4_tosd0")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/NameLabel/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/NameLabel/PanelContainer" unique_id=1493816009]
 layout_mode = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="PackageNameLabel" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/NameLabel/PanelContainer/MarginContainer"]
+[node name="PackageNameLabel" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/NameLabel/PanelContainer/MarginContainer" unique_id=700262231]
 unique_name_in_owner = true
 self_modulate = Color(0.8, 0.8, 0.8, 1)
 layout_mode = 2
@@ -198,77 +198,77 @@ text = "This is a package name"
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="DescriptionLabel" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer"]
+[node name="DescriptionLabel" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer" unique_id=1553961575]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/DescriptionLabel"]
+[node name="Label" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/DescriptionLabel" unique_id=1334767435]
 layout_mode = 2
 text = "Description:"
 vertical_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/DescriptionLabel"]
+[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/DescriptionLabel" unique_id=655212264]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("4_tosd0")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/DescriptionLabel/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/DescriptionLabel/PanelContainer" unique_id=917331342]
 layout_mode = 2
 
-[node name="PackageDescriptionLabel" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/DescriptionLabel/PanelContainer/MarginContainer"]
+[node name="PackageDescriptionLabel" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/DescriptionLabel/PanelContainer/MarginContainer" unique_id=955431053]
 unique_name_in_owner = true
 layout_mode = 2
 text = "No Description Provided"
 vertical_alignment = 1
 
-[node name="VersionLabel" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer"]
+[node name="VersionLabel" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer" unique_id=488074926]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/VersionLabel"]
+[node name="Label" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/VersionLabel" unique_id=1161611320]
 layout_mode = 2
 text = "Version:"
 vertical_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/VersionLabel"]
+[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/VersionLabel" unique_id=1879818354]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("4_tosd0")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/VersionLabel/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/VersionLabel/PanelContainer" unique_id=163854956]
 layout_mode = 2
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="PackageVersionLabel" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/VersionLabel/PanelContainer/MarginContainer"]
+[node name="PackageVersionLabel" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/VersionLabel/PanelContainer/MarginContainer" unique_id=396430994]
 unique_name_in_owner = true
 layout_mode = 2
 text = "v1.0.0"
 
-[node name="Label" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer"]
+[node name="Label" type="Label" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer" unique_id=472581337]
 layout_mode = 2
 text = "Package Files:"
 
-[node name="PackageFileDetails" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer" instance=ExtResource("5_mxn5n")]
+[node name="PackageFileDetails" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer" unique_id=144309285 instance=ExtResource("5_mxn5n")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Pad" type="Control" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer"]
+[node name="Pad" type="Control" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer" unique_id=890786263]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer" unique_id=1620541598]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/CenterContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/CenterContainer" unique_id=1864287024]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 alignment = 1
 
-[node name="DeleteButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/CenterContainer/HBoxContainer"]
+[node name="DeleteButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/CenterContainer/HBoxContainer" unique_id=1303652028]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Delete"
 
-[node name="ImportButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/CenterContainer/HBoxContainer"]
+[node name="ImportButton" type="Button" parent="Control/MarginContainer/HBoxContainer/Details/PackageDetailsRoot/VBoxContainer/CenterContainer/HBoxContainer" unique_id=551474099]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Import"

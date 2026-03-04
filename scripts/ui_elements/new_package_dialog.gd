@@ -17,8 +17,6 @@ func _ready() -> void:
     close_requested.connect(hide)
     _open_root_path_browser_button.pressed.connect(select_package_root_pressed)
     _create_package_button.pressed.connect(_on_create_button_pressed)
-
-
     _package_source_dropdown.clear()
 
     if(!GodotPackageManager.loaded_config.package_source_locations.is_empty()):
@@ -45,7 +43,7 @@ func select_package_root_pressed()->void:
 
     new_file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR
     new_file_dialog.access = FileDialog.ACCESS_RESOURCES
-    
+
     new_file_dialog.dir_selected.connect(_on_root_directory_selected, CONNECT_ONE_SHOT)
 
     new_file_dialog.popup_centered()
@@ -86,13 +84,13 @@ func _on_create_button_pressed()->void:
     if(!validation_warning.is_empty()):
         GPM_UIOperations.create_warning_dialog(validation_warning, self).popup_centered()
         return
-    
+
     var selected_files:Array = _package_content_display.get_all_selected()
     var config:GPM_PackageConfig = GPM_PackageConfig.new()
     config.contents = selected_files
     config.package_name = _package_name_input.text
     config.package_version = _package_version_input.text
     config.package_description = _package_description_input.text
-    
+
     GPM_PackageOperations.export_package(config, _package_root_display_label.text, GodotPackageManager.loaded_config.package_source_locations[_package_source_dropdown.selected])
     pass

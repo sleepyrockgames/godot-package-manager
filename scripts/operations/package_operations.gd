@@ -10,7 +10,7 @@ static func export_package(config:GPM_PackageConfig, source_root_directory:Strin
 
 	var package_dir_name:String = config.package_name.to_lower().trim_prefix(" ").trim_suffix(" ").replace(" ", "_")
 	var full_final_path:String = ProjectSettings.globalize_path(package_source_path + GodotPackageManager.DIRECTORY_SEPARATOR + package_dir_name)
-	
+
 	var relative_contents:Array[String] = []
 	## Copy all files to the temp dir
 	for path:String in config.contents:
@@ -40,8 +40,21 @@ static func export_package(config:GPM_PackageConfig, source_root_directory:Strin
 		return
 	info_file.store_string(package_info_content)
 	info_file.close()
-	
+	print("Successfully created package: " + config.package_name)
 	pass
+
+## Helper function to determi
+static func does_zip_have_package_manifest(zip_archive_path:String)->bool:
+	var temp_dir:DirAccess = DirAccess.create_temp("unzipe_temp")
+	var root_dir_path:String = temp_dir.get_current_dir()
+	GPM_FileHelpers.extract_zip_to_path(zip_archive_path, root_dir_path)
+
+	var all_files:Array = Array(temp_dir.get_files())
+	var package_file:String = all_files.filter( func(val:String): return val.ends_with(GodotPackageManager.PM_PACKAGE_INFO_EXT)).front()
+
+	# Didn't find anything :(
+	return package_file != null
+
 
 ## Recursively scans the given directory for packages
 static func _scan_for_packages(root_directory_abs_path:String, visited_dirs:Array[String])->Array:
@@ -54,7 +67,7 @@ static func _scan_for_packages(root_directory_abs_path:String, visited_dirs:Arra
 	packages_in_dir.append_array(DirAccess.get_files_at(root_directory_abs_path))
 
 	# Remove any non-info files and convert the name to the full path to the file
-	packages_in_dir = packages_in_dir.filter(func(file:String): return file.ends_with(GodotPackageManager.PM_PACKAGE_INFO_EXT))\
+	packages_in_dir = packages_in_dir.filter(func(file_name:String): return _is_file_package_info(root_directory_abs_path + GodotPackageManager.DIRECTORY_SEPARATOR + file_name))\
 		.map(func(file_name): return root_directory_abs_path + GodotPackageManager.DIRECTORY_SEPARATOR + file_name)
    # print(packages_in_dir)
 
@@ -65,12 +78,30 @@ static func _scan_for_packages(root_directory_abs_path:String, visited_dirs:Arra
 	return packages_in_dir
 	pass
 
-## Loads all the packages present in the given directory (or its subdirectories), 
+## Returns true if the file at the path is a package manifest. Returns false otherwise
+static func _is_file_package_info(global_file_path:String)->bool:
+	# TODO(@sleepyrockgames): Do we need to check if the path given is a directory?
+	print(global_file_path)
+	# Sanity check
+	if(!FileAccess.file_exists(global_file_path)):
+		return false
+
+	if(global_file_path.ends_with(GodotPackageManager.PM_PACKAGE_INFO_EXT)):
+		print("Found package: " + global_file_path)
+		return true
+
+	# TODO(@sleepyrockgames) How do we convert this to a 'temp' path without inflating the archive?
+	elif(global_file_path.ends_with(".zip")):
+		#return does_zip_have_package_manifest(global_file_path) != null
+		return false
+	return false
+
+## Loads all the packages present in the given directory (or its subdirectories),
 ## mapping the full path to the config file to it's loaded config object
 static func load_packages_in_dir(root_dir:String)->Dictionary:
 	var loaded_packages:Dictionary = {}
 	var package_paths:Array = _scan_for_packages(ProjectSettings.globalize_path(root_dir), [])
-	
+
 	for package_path:String in package_paths:
 		var loaded_package_file:FileAccess = FileAccess.open(package_path, FileAccess.READ)
 		if(loaded_package_file == null):
@@ -95,7 +126,7 @@ static func import_package(package_info_location:String, package_config:GPM_Pack
 		var abs_import_loc:String = ProjectSettings.globalize_path(full_to_location)
 		var abs_import_directory:String = ProjectSettings.globalize_path(import_location + GodotPackageManager.DIRECTORY_SEPARATOR + package_config.package_name)
 
-		print("copying from " + full_from_location + " to " + full_to_location)
+	#	print("copying from " + full_from_location + " to " + full_to_location)
 		var err =  DirAccess.make_dir_recursive_absolute(_get_parent_directory_abs_path(abs_import_loc))
 		if(err != OK):
 			DirAccess.remove_absolute(abs_import_directory) # Cleanup
